@@ -115,7 +115,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
 
     private fun generateSQLTableAnswer(): String {
         return "$CREATE_TABLE $TABLE_ANSWER(" +
-                    "$ANSWER_ID $INTEGER $PRIM_KEY_AUTOINC" +
+                    "$ANSWER_ID $INTEGER $PRIM_KEY_AUTOINC," +
                     "$QUESTION_ID $INTEGER," +
                     "$TIMESTAMP $TEXT," +
                     "$ANSWER_GIVEN $INTEGER," +
