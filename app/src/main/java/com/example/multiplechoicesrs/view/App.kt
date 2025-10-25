@@ -31,8 +31,7 @@ fun App() {
             .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
         NavHost(
-            //TODO: If no decks -> ImportScreen
-            startDestination = Screen.ImportDataScreen,
+            startDestination = Screen.DeckListScreen,
             navController = navController,
         ) {
             composable<Screen.ImportDataScreen> {
@@ -45,6 +44,9 @@ fun App() {
 
             composable<Screen.DeckListScreen> {
                 DeckListScreen(
+                    navToImport = {
+                        navController.navigate(Screen.ImportDataScreen)
+                    },
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()

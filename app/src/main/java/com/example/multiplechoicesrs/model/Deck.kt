@@ -2,7 +2,8 @@ package com.example.multiplechoicesrs.model
 
 data class Deck(
     val deckId: Int,
-    val name: String
+    val name: String,
+    val versionId: Int
 ) {
     fun getCategories(): List<Category> {
         //TODO:
