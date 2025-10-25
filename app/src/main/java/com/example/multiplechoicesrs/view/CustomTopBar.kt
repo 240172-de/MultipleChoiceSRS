@@ -46,9 +46,9 @@ fun ContentAwareTopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 scrolledContainerColor = Color.Unspecified,
-                navigationIconContentColor = Color.Unspecified,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-                actionIconContentColor = Color.Unspecified
+                navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
             )
         )
     }
