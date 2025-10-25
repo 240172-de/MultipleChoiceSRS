@@ -36,6 +36,7 @@ fun App() {
         ) {
             composable<Screen.ImportDataScreen> {
                 ImportDataScreen(
+                    navBack = navController::popBackStack,
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()
