@@ -15,9 +15,11 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         const val TABLE_QUESTION = "questions"
         const val TABLE_QUESTION_RESULT = "question_results"
         const val TABLE_ANSWER = "answers"
+        const val TABLE_STUDY_SESSION = "study_sessions"
 
         const val DECK_ID = "deck_id"
         const val DECK_NAME = "name"
+        const val VERSION_ID = "version_id"
 
         const val CATEGORY_ID = "category_id"
         const val CATEGORY_NAME = "name"
@@ -47,11 +49,15 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         const val ANSWER_GIVEN = "answer_given"
         const val IS_CORRECT = "is_correct"
 
+        const val STUDY_SESSION_ID = "study_session_id"
+        const val NUM_INCORRECT = "num_incorrect"
+
         private const val CREATE_TABLE = "CREATE TABLE IF NOT EXISTS"
         private const val TEXT = "TEXT"
         private const val INTEGER = "INTEGER"
         private const val PRIM_KEY = "PRIMARY KEY"
         private const val PRIM_KEY_AUTOINC = "PRIMARY KEY AUTOINCREMENT"
+        //TODO: No autoincrement when via server
     }
 
     override fun onCreate(p0: SQLiteDatabase?) {
@@ -61,6 +67,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
             it.execSQL(generateSQLTableQuestion())
             it.execSQL(generateSQLTableQuestionResult())
             it.execSQL(generateSQLTableAnswer())
+            it.execSQL(generateSQLTableStudySesion())
         }
     }
 
@@ -70,7 +77,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
     private fun generateSQLTableDeck(): String {
         return "$CREATE_TABLE $TABLE_DECK(" +
                     "$DECK_ID $INTEGER $PRIM_KEY_AUTOINC," +
-                    "$DECK_NAME $TEXT" +
+                    "$DECK_NAME $TEXT," +
+                    "$VERSION_ID $INTEGER" +
                 ")"
     }
 
@@ -86,7 +94,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         return "$CREATE_TABLE $TABLE_QUESTION(" +
                     "$DECK_ID $INTEGER," +
                     "$CATEGORY_ID $INTEGER," +
-                    "$QUESTION_ID $INTEGER $PRIM_KEY," +
+                    "$QUESTION_ID $INTEGER $PRIM_KEY_AUTOINC," +
                     "$QUESTION $TEXT," +
                     "$QUESTION_IMAGE $TEXT," +
                     "$ANSWER1 $TEXT," +
@@ -120,6 +128,15 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
                     "$TIMESTAMP $TEXT," +
                     "$ANSWER_GIVEN $INTEGER," +
                     "$IS_CORRECT $INTEGER" +
+                ")"
+    }
+
+    private fun generateSQLTableStudySesion(): String {
+        return "$CREATE_TABLE $TABLE_STUDY_SESSION(" +
+                    "$STUDY_SESSION_ID $INTEGER $PRIM_KEY_AUTOINC," +
+                    "$TIMESTAMP $TEXT," +
+                    "$NUM_CORRECT $INTEGER," +
+                    "$NUM_INCORRECT $INTEGER" +
                 ")"
     }
 }
