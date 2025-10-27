@@ -1,21 +1,19 @@
 package com.example.multiplechoicesrs.model
 
-import androidx.compose.ui.graphics.ImageBitmap
-
-data class Question(
+data class QuestionJson(
     val deckId: Int,
     val categoryId: Int,
     val questionId: Int,
     val question: String,
-    val questionImage: ImageBitmap,
+    val questionImage: String,
     val answer1: String,
     val answer2: String,
     val answer3: String,
     val answer4: String,
-    val answer1Image: ImageBitmap,
-    val answer2Image: ImageBitmap,
-    val answer3Image: ImageBitmap,
-    val answer4Image: ImageBitmap,
+    val answer1Image: String,
+    val answer2Image: String,
+    val answer3Image: String,
+    val answer4Image: String,
     val correctAnswer: Int,
     val explanation: String,
     val source: String
