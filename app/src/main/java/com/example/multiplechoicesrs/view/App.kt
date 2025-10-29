@@ -52,6 +52,9 @@ fun App() {
                     navToCategoryList = { deckId ->
                         navController.navigate(Screen.CategoryListScreen(deckId))
                     },
+                    navToStudy = { deckId, categoryIdList ->
+                        navController.navigate(Screen.StudyScreen(deckId, categoryIdList))
+                    },
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()
@@ -63,7 +66,25 @@ fun App() {
 
                 CategoryListScreen(
                     deckId = args.deckId,
+                    navToStudy = { deckId, categoryIdList ->
+                        navController.navigate(Screen.StudyScreen(deckId, categoryIdList))
+                    },
                     navBack = navController::popBackStack,
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                )
+            }
+
+            composable<Screen.StudyScreen> {
+                val args = it.toRoute<Screen.StudyScreen>()
+
+                StudyScreen(
+                    deckId = args.deckId,
+                    categoryIdList = args.categoryIdList,
+                    navToDeckList = {
+                        navController.navigate(Screen.DeckListScreen)
+                    },
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()

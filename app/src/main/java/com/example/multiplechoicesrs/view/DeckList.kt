@@ -31,14 +31,15 @@ import com.example.multiplechoicesrs.model.Deck
 @Composable
 fun DeckList(
     decks: List<Deck>,
-    navToCategoryList: (deckId: Int) -> Unit
+    navToCategoryList: (deckId: Int) -> Unit,
+    navToStudy: (deckId: Int, categoryIdList: List<Int>) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(decks) { deck ->
-            DeckItem(deck, navToCategoryList)
+            DeckItem(deck, navToCategoryList, navToStudy)
         }
     }
 }
@@ -46,7 +47,8 @@ fun DeckList(
 @Composable
 fun DeckItem(
     deck: Deck,
-    navToCategoryList: (deckId: Int) -> Unit
+    navToCategoryList: (deckId: Int) -> Unit,
+    navToStudy: (deckId: Int, categoryIdList: List<Int>) -> Unit
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
@@ -103,18 +105,20 @@ fun DeckItem(
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-
+                            val categoryIdList = deck.categories?.map { it.categoryId } ?: emptyList()
+                            navToStudy(deck.deckId, categoryIdList)
                         }) {
                         Text("全分野")
                     }
 
-                    //TODO: Show only if there are multiple categories
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-                            navToCategoryList(deck.deckId)
-                        }) {
-                        Text("分野から選ぶ")
+                    if (deck.categories != null && deck.categories!!.size > 1) {
+                        Button(
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                navToCategoryList(deck.deckId)
+                            }) {
+                            Text("分野から選ぶ")
+                        }
                     }
                 }
             }

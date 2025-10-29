@@ -1,5 +1,6 @@
 package com.example.multiplechoicesrs.view
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,16 +18,16 @@ import androidx.compose.ui.unit.dp
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.DeckTableHelper
+import com.example.multiplechoicesrs.model.Deck
 
 @Composable
 fun DeckListScreen(
     navToImport: () -> Unit,
     navToCategoryList: (deckId: Int) -> Unit,
+    navToStudy: (deckId: Int, categoryIdList: List<Int>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val deckTableHelper = DeckTableHelper(LocalContext.current)
-    val categoryTableHelper = CategoryTableHelper(LocalContext.current)
-    val decks = deckTableHelper.getDecks()
+    val decks = loadDecks(LocalContext.current)
 
     ProvideAppBarTitle {
         Text("学習")
@@ -47,7 +48,7 @@ fun DeckListScreen(
         if (decks.isEmpty()) {
             NoDeckDataScreen(navToImport)
         } else {
-            DeckList(decks, navToCategoryList)
+            DeckList(decks, navToCategoryList, navToStudy)
         }
     }
 }
@@ -72,4 +73,17 @@ fun NoDeckDataScreen(
             Text("インポート画面へ")
         }
     }
+}
+
+private fun loadDecks(context: Context): List<Deck> {
+    val deckTableHelper = DeckTableHelper(context)
+    val categoryTableHelper = CategoryTableHelper(context)
+
+    val decks = deckTableHelper.getDecks()
+
+    for (deck in decks) {
+        deck.categories = categoryTableHelper.getCategories(deck.deckId)
+    }
+
+    return decks
 }

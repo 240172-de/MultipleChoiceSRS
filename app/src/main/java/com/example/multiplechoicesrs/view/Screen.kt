@@ -12,4 +12,10 @@ sealed class Screen {
     data class CategoryListScreen(
         val deckId: Int
     )
+
+    @Serializable
+    data class StudyScreen(
+        val deckId: Int,
+        val categoryIdList: List<Int>
+    )
 }

@@ -1,7 +1,6 @@
 package com.example.multiplechoicesrs.view
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +19,7 @@ import com.example.multiplechoicesrs.db.CategoryTableHelper
 @Composable
 fun CategoryListScreen(
     deckId: Int,
+    navToStudy: (deckId: Int, categoryIdList: List<Int>) -> Unit,
     navBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -52,7 +52,7 @@ fun CategoryListScreen(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-            Log.d("TEST", "${getCheckedIds(list)}")
+                navToStudy(deckId, getCheckedIds(list))
         }) {
             Text("学習する")
         }
