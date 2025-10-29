@@ -7,4 +7,9 @@ sealed class Screen {
 
     @Serializable
     data object DeckListScreen
+
+    @Serializable
+    data class CategoryListScreen(
+        val deckId: Int
+    )
 }

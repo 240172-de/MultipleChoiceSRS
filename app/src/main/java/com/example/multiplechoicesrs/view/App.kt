@@ -12,6 +12,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +49,21 @@ fun App() {
                     navToImport = {
                         navController.navigate(Screen.ImportDataScreen)
                     },
+                    navToCategoryList = { deckId ->
+                        navController.navigate(Screen.CategoryListScreen(deckId))
+                    },
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                )
+            }
+
+            composable<Screen.CategoryListScreen> {
+                val args = it.toRoute<Screen.CategoryListScreen>()
+
+                CategoryListScreen(
+                    deckId = args.deckId,
+                    navBack = navController::popBackStack,
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()

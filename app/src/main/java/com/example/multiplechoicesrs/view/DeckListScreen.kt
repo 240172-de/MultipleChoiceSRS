@@ -35,6 +35,7 @@ import com.example.multiplechoicesrs.model.Deck
 @Composable
 fun DeckListScreen(
     navToImport: () -> Unit,
+    navToCategoryList: (deckId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val deckTableHelper = DeckTableHelper(LocalContext.current)
@@ -59,7 +60,7 @@ fun DeckListScreen(
         if (decks.isEmpty()) {
             NoDeckDataScreen(navToImport)
         } else {
-            DeckList(decks)
+            DeckList(decks, navToCategoryList)
         }
     }
 }
@@ -87,19 +88,25 @@ fun NoDeckDataScreen(
 }
 
 @Composable
-fun DeckList(decks: List<Deck>) {
+fun DeckList(
+    decks: List<Deck>,
+    navToCategoryList: (deckId: Int) -> Unit
+) {
     LazyColumn(
         modifier = Modifier.padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(decks) { deck ->
-            DeckItem(deck)
+            DeckItem(deck, navToCategoryList)
         }
     }
 }
 
 @Composable
-fun DeckItem(deck: Deck) {
+fun DeckItem(
+    deck: Deck,
+    navToCategoryList: (deckId: Int) -> Unit
+) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(
@@ -138,7 +145,6 @@ fun DeckItem(deck: Deck) {
                             .size(36.dp)
                     )
                 }
-
             }
 
             Column {
@@ -164,7 +170,7 @@ fun DeckItem(deck: Deck) {
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-
+                        navToCategoryList(deck.deckId)
                     }) {
                         Text("分野から選ぶ")
                     }
