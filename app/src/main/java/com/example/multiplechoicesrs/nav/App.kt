@@ -1,4 +1,4 @@
-package com.example.multiplechoicesrs.view
+package com.example.multiplechoicesrs.nav
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,6 +13,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.multiplechoicesrs.model.Deck
+import com.example.multiplechoicesrs.view.CategoryListScreen
+import com.example.multiplechoicesrs.view.ContentAwareTopAppBar
+import com.example.multiplechoicesrs.view.DeckListScreen
+import com.example.multiplechoicesrs.view.ImportDataScreen
+import com.example.multiplechoicesrs.nav.Screen
+import com.example.multiplechoicesrs.view.StudyScreen
+import kotlin.reflect.typeOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,13 +69,17 @@ fun App() {
                 )
             }
 
-            composable<Screen.CategoryListScreen> {
+            composable<Screen.CategoryListScreen>(
+                typeMap = mapOf(
+                    typeOf<Deck>() to navTypeOf<Deck>()
+                )
+            ) {
                 val args = it.toRoute<Screen.CategoryListScreen>()
 
                 CategoryListScreen(
-                    deckId = args.deckId,
-                    navToStudy = { deckId, categoryIdList ->
-                        navController.navigate(Screen.StudyScreen(deckId, categoryIdList))
+                    deck = args.deck,
+                    navToStudy = { deck, categoryIdList ->
+                        navController.navigate(Screen.StudyScreen(deck, categoryIdList))
                     },
                     navBack = navController::popBackStack,
                     modifier = Modifier
@@ -76,11 +88,15 @@ fun App() {
                 )
             }
 
-            composable<Screen.StudyScreen> {
+            composable<Screen.StudyScreen>(
+                typeMap = mapOf(
+                    typeOf<Deck>() to navTypeOf<Deck>()
+                )
+            ) {
                 val args = it.toRoute<Screen.StudyScreen>()
 
                 StudyScreen(
-                    deckId = args.deckId,
+                    deck = args.deck,
                     categoryIdList = args.categoryIdList,
                     navToDeckList = {
                         navController.navigate(Screen.DeckListScreen)

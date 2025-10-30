@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.multiplechoicesrs.ui.theme.MultipleChoiceSRSTheme
-import com.example.multiplechoicesrs.view.App
+import com.example.multiplechoicesrs.nav.App
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

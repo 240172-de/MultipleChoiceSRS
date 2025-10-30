@@ -8,10 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.multiplechoicesrs.R
+import com.example.multiplechoicesrs.model.Deck
 
 @Composable
 fun StudyScreen(
-    deckId: Int,
+    deck: Deck,
     categoryIdList: List<Int>,
     navToDeckList: () -> Unit,
     modifier: Modifier = Modifier
@@ -34,7 +35,7 @@ fun StudyScreen(
     }
 
     Column(modifier) {
-        Text("$deckId   $categoryIdList")
+        Text("${deck.name}   $categoryIdList")
     }
 }
 

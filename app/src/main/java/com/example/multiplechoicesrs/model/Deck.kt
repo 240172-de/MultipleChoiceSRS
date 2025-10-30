@@ -1,5 +1,8 @@
 package com.example.multiplechoicesrs.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Deck(
     val deckId: Int,
     val name: String,

@@ -1,6 +1,8 @@
-package com.example.multiplechoicesrs.view
+package com.example.multiplechoicesrs.nav
 
+import com.example.multiplechoicesrs.model.Deck
 import kotlinx.serialization.Serializable
+
 sealed class Screen {
     @Serializable
     data object ImportDataScreen
@@ -10,12 +12,12 @@ sealed class Screen {
 
     @Serializable
     data class CategoryListScreen(
-        val deckId: Int
+        val deck: Deck
     )
 
     @Serializable
     data class StudyScreen(
-        val deckId: Int,
+        val deck: Deck,
         val categoryIdList: List<Int>
     )
 }

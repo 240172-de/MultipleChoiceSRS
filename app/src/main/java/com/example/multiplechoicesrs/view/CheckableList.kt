@@ -1,6 +1,8 @@
 package com.example.multiplechoicesrs.view
 
+import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -32,7 +34,12 @@ class CheckableItem(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CheckableList(data: List<CheckableItem>, trailingContent: (@Composable () -> Unit)? = null, modifier: Modifier = Modifier) {
+fun CheckableList(
+    data: List<CheckableItem>,
+    onCheckedChange: () -> Unit,
+    modifier: Modifier = Modifier,
+    trailingContent: (@Composable () -> Unit)? = null
+) {
     val items = remember { data.toMutableStateList() }
 
     LazyColumn(modifier) {
@@ -41,6 +48,7 @@ fun CheckableList(data: List<CheckableItem>, trailingContent: (@Composable () ->
                 modifier = Modifier
                     .clickable(onClick = {
                         item.isChecked = !item.isChecked
+                        onCheckedChange()
                     })
                     .padding(vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -49,6 +57,7 @@ fun CheckableList(data: List<CheckableItem>, trailingContent: (@Composable () ->
                     checked = item.isChecked,
                     onCheckedChange = { newCheckedState ->
                         item.isChecked = newCheckedState
+                        onCheckedChange()
                     }
                 )
 

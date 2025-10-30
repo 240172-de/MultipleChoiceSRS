@@ -23,8 +23,8 @@ import com.example.multiplechoicesrs.model.Deck
 @Composable
 fun DeckListScreen(
     navToImport: () -> Unit,
-    navToCategoryList: (deckId: Int) -> Unit,
-    navToStudy: (deckId: Int, categoryIdList: List<Int>) -> Unit,
+    navToCategoryList: (deck: Deck) -> Unit,
+    navToStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val decks = loadDecks(LocalContext.current)
