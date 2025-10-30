@@ -1,7 +1,9 @@
 package com.example.multiplechoicesrs.model
 
 import androidx.compose.ui.graphics.ImageBitmap
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Question(
     val deckId: Int,
     val categoryId: Int,

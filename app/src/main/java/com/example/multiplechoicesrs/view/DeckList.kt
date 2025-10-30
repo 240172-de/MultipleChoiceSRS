@@ -19,6 +19,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,19 +31,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.model.Deck
+import com.example.multiplechoicesrs.view.dialog.SelectNumToStudyDialog
 
 @Composable
 fun DeckList(
     decks: List<Deck>,
-    navToCategoryList: (deckId: Int) -> Unit,
-    navToStudy: (deckId: Int, categoryIdList: List<Int>) -> Unit
+    navToCategoryList: (deck: Deck) -> Unit,
+    navToStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit
 ) {
+    //TODO: selected wird nicht korrekt gesetzt
+    var selectedDeck: Deck? by remember { mutableStateOf(null) }
+//    var selectedDeckId: Int = -1
+    var selectedCategoryIdList: List<Int> by remember { mutableStateOf(emptyList()) }
+    var showSelectNumDialog by remember { mutableStateOf(false) }
+
+    if (showSelectNumDialog && selectedDeck != null) {
+        SelectNumToStudyDialog(
+            deck = selectedDeck!!,
+            categoryIdList = selectedCategoryIdList,
+            onDismissRequest = {
+                showSelectNumDialog = false
+            },
+            navToStudy = navToStudy)
+    }
+
     LazyColumn(
         modifier = Modifier.padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(decks) { deck ->
-            DeckItem(deck, navToCategoryList, navToStudy)
+            DeckItem(deck, navToCategoryList) { deck, categoryIdList ->
+//                selectedDeckId = deckId
+                selectedCategoryIdList = categoryIdList
+                selectedDeck = deck
+                showSelectNumDialog = true
+            }
         }
     }
 }
@@ -47,8 +73,8 @@ fun DeckList(
 @Composable
 fun DeckItem(
     deck: Deck,
-    navToCategoryList: (deckId: Int) -> Unit,
-    navToStudy: (deckId: Int, categoryIdList: List<Int>) -> Unit
+    navToCategoryList: (deck: Deck) -> Unit,
+    onClickStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
@@ -106,7 +132,7 @@ fun DeckItem(
                         modifier = Modifier.weight(1f),
                         onClick = {
                             val categoryIdList = deck.categories?.map { it.categoryId } ?: emptyList()
-                            navToStudy(deck.deckId, categoryIdList)
+                            onClickStudy(deck, categoryIdList)
                         }) {
                         Text("全分野")
                     }
@@ -115,7 +141,7 @@ fun DeckItem(
                         Button(
                             modifier = Modifier.weight(1f),
                             onClick = {
-                                navToCategoryList(deck.deckId)
+                                navToCategoryList(deck)
                             }) {
                             Text("分野から選ぶ")
                         }
