@@ -45,6 +45,8 @@ import com.example.multiplechoicesrs.ext.modifyIf
 import com.example.multiplechoicesrs.logic.StudyHelper
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.model.Question
+import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
+import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 
 @Composable
 fun StudyScreenLoad(
@@ -112,9 +114,7 @@ fun StudyScreen(questionList: List<Question>) {
             Spacer(Modifier.weight(1f))
             AnswerBottomSheet(currentQuestion)
         }
-
     }
-
 }
 
 @Composable
@@ -142,13 +142,13 @@ fun AnswerBottomSheet(question: Question) {
                                 val index = index + 1
 
                                 if (question.correctAnswer == index) {
-                                    color = Color.Green
+                                    color = GreenCorrectAnswer
                                 } else if (selectedInt == index) {
-                                    color = Color.Red
+                                    color = RedIncorrectAnswer
                                 }
 
                                 border(
-                                    border = BorderStroke(1.dp, color),
+                                    border = BorderStroke(2.dp, color),
                                     shape = RoundedCornerShape(10.dp)
                                 )
                             })

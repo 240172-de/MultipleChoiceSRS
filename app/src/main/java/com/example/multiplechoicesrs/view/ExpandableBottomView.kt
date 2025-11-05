@@ -25,11 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.multiplechoicesrs.R
+import com.example.multiplechoicesrs.ui.theme.LightBlue
 
 @Composable
 fun ExpandableBottomView(
@@ -37,17 +37,11 @@ fun ExpandableBottomView(
     content: @Composable () -> Unit
 ) {
     val cornerRadius = 10.dp
-    val borderColor = Color.LightGray
 
     var showContent by remember { mutableStateOf(initialIsExpanded) }
 
     Box(
         Modifier
-            .padding(2.dp)
-            .border(
-                border = BorderStroke(1.dp, borderColor),
-                shape = RoundedCornerShape(cornerRadius)
-            )
             .zIndex(2f)
     ) {
         Column {
@@ -58,7 +52,7 @@ fun ExpandableBottomView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(cornerRadius, cornerRadius, 0.dp, 0.dp))
-                    .background(Color.LightGray),
+                    .background(LightBlue),
             ) {
                 val degree by animateFloatAsState(
                     targetValue = if (showContent) 0f else 180f,
