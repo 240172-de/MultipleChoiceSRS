@@ -39,9 +39,7 @@ fun DeckList(
     navToCategoryList: (deck: Deck) -> Unit,
     navToStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit
 ) {
-    //TODO: selected wird nicht korrekt gesetzt
     var selectedDeck: Deck? by remember { mutableStateOf(null) }
-//    var selectedDeckId: Int = -1
     var selectedCategoryIdList: List<Int> by remember { mutableStateOf(emptyList()) }
     var showSelectNumDialog by remember { mutableStateOf(false) }
 
@@ -61,7 +59,6 @@ fun DeckList(
     ) {
         items(decks) { deck ->
             DeckItem(deck, navToCategoryList) { deck, categoryIdList ->
-//                selectedDeckId = deckId
                 selectedCategoryIdList = categoryIdList
                 selectedDeck = deck
                 showSelectNumDialog = true

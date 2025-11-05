@@ -13,12 +13,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.view.CategoryListScreen
 import com.example.multiplechoicesrs.view.ContentAwareTopAppBar
 import com.example.multiplechoicesrs.view.DeckListScreen
 import com.example.multiplechoicesrs.view.ImportDataScreen
-import com.example.multiplechoicesrs.nav.Screen
 import com.example.multiplechoicesrs.view.StudyScreen
+import kotlin.reflect.typeOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +68,11 @@ fun App() {
                 )
             }
 
-            composable<Screen.CategoryListScreen> {
+            composable<Screen.CategoryListScreen>(
+                typeMap = mapOf(
+                    typeOf<Deck>() to navTypeOf<Deck>()
+                )
+            ) {
                 val args = it.toRoute<Screen.CategoryListScreen>()
 
                 CategoryListScreen(
@@ -82,7 +87,11 @@ fun App() {
                 )
             }
 
-            composable<Screen.StudyScreen> {
+            composable<Screen.StudyScreen>(
+                typeMap = mapOf(
+                    typeOf<Deck>() to navTypeOf<Deck>()
+                )
+            ) {
                 val args = it.toRoute<Screen.StudyScreen>()
 
                 StudyScreen(
