@@ -24,7 +24,7 @@ import com.example.multiplechoicesrs.model.Deck
 fun DeckListScreen(
     navToImport: () -> Unit,
     navToCategoryList: (deck: Deck) -> Unit,
-    navToStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit,
+    navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val decks = loadDecks(LocalContext.current)

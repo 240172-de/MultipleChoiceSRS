@@ -18,6 +18,7 @@ sealed class Screen {
     @Serializable
     data class StudyScreen(
         val deck: Deck,
-        val categoryIdList: List<Int>
+        val categoryIdList: List<Int>,
+        val numToStudy: Int
     )
 }

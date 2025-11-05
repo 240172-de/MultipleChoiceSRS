@@ -59,8 +59,8 @@ fun App() {
                     navToCategoryList = { deckId ->
                         navController.navigate(Screen.CategoryListScreen(deckId))
                     },
-                    navToStudy = { deckId, categoryIdList ->
-                        navController.navigate(Screen.StudyScreen(deckId, categoryIdList))
+                    navToStudy = { deckId, categoryIdList, numToStudy ->
+                        navController.navigate(Screen.StudyScreen(deckId, categoryIdList, numToStudy))
                     },
                     modifier = Modifier
                         .padding(innerPadding)
@@ -77,8 +77,8 @@ fun App() {
 
                 CategoryListScreen(
                     deck = args.deck,
-                    navToStudy = { deck, categoryIdList ->
-                        navController.navigate(Screen.StudyScreen(deck, categoryIdList))
+                    navToStudy = { deck, categoryIdList, numToStudy ->
+                        navController.navigate(Screen.StudyScreen(deck, categoryIdList, numToStudy))
                     },
                     navBack = navController::popBackStack,
                     modifier = Modifier
@@ -97,6 +97,7 @@ fun App() {
                 StudyScreen(
                     deck = args.deck,
                     categoryIdList = args.categoryIdList,
+                    numToStudy = args.numToStudy,
                     navToDeckList = {
                         navController.navigate(Screen.DeckListScreen)
                     },

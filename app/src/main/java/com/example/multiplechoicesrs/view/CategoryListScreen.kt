@@ -24,7 +24,7 @@ import com.example.multiplechoicesrs.view.dialog.SelectNumToStudyDialog
 @Composable
 fun CategoryListScreen(
     deck: Deck,
-    navToStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit,
+    navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit,
     navBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {

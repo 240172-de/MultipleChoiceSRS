@@ -37,7 +37,7 @@ import com.example.multiplechoicesrs.view.dialog.SelectNumToStudyDialog
 fun DeckList(
     decks: List<Deck>,
     navToCategoryList: (deck: Deck) -> Unit,
-    navToStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit
+    navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit
 ) {
     var selectedDeck: Deck? by remember { mutableStateOf(null) }
     var selectedCategoryIdList: List<Int> by remember { mutableStateOf(emptyList()) }

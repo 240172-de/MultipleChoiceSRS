@@ -19,13 +19,17 @@ class QuestionTableHelper(context: Context) {
         return getQuestions("${DBHelper.DECK_ID} = ?", params)
     }
 
-    fun getQuestions(deckId: Int, categoryId: Int): List<Question> {
-        val params = arrayOf(
-            deckId.toString(),
-            categoryId.toString()
-        )
+    fun getQuestions(deckId: Int, categoryIdList: List<Int>): List<Question> {
+        val temp = ArrayList<String>(categoryIdList.size + 1)
+        temp.add(deckId.toString())
+        temp.addAll(categoryIdList.map { it.toString() })
+        val params = temp.toTypedArray()
 
-        return getQuestions("${DBHelper.DECK_ID} = ? AND ${DBHelper.CATEGORY_ID} = ?", params)
+        val inClause = categoryIdList.joinToString {
+            "?"
+        }
+
+        return getQuestions("${DBHelper.DECK_ID} = ? AND ${DBHelper.CATEGORY_ID} IN ($inClause)", params)
     }
 
     @SuppressLint("Range")
@@ -71,7 +75,11 @@ class QuestionTableHelper(context: Context) {
         return list
     }
 
-    private fun getImageBitmap(base64String: String): ImageBitmap {
+    private fun getImageBitmap(base64String: String): ImageBitmap? {
+        if (base64String.isEmpty()) {
+            return null
+        }
+
         val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
         return bitmap.asImageBitmap()
