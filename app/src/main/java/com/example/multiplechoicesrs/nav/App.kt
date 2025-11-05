@@ -18,7 +18,7 @@ import com.example.multiplechoicesrs.view.CategoryListScreen
 import com.example.multiplechoicesrs.view.ContentAwareTopAppBar
 import com.example.multiplechoicesrs.view.DeckListScreen
 import com.example.multiplechoicesrs.view.ImportDataScreen
-import com.example.multiplechoicesrs.view.StudyScreen
+import com.example.multiplechoicesrs.view.StudyScreenLoad
 import kotlin.reflect.typeOf
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,7 +94,7 @@ fun App() {
             ) {
                 val args = it.toRoute<Screen.StudyScreen>()
 
-                StudyScreen(
+                StudyScreenLoad(
                     deck = args.deck,
                     categoryIdList = args.categoryIdList,
                     numToStudy = args.numToStudy,
