@@ -20,5 +20,6 @@ data class Question(
     val answer4Image: ImageBitmap?,
     val correctAnswer: Int,
     val explanation: String,
-    val source: String
+    val source: String,
+    val result: QuestionResult
 )

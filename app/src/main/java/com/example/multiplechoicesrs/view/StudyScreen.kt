@@ -102,36 +102,59 @@ fun StudyScreenLoad(
 
 @Composable
 fun StudyScreen(questionList: List<Question>) {
-    var currentQuestion by remember { mutableStateOf(questionList.first()) }
+    var indexCurrentQuestion by remember { mutableIntStateOf(0) }
+    var numCorrect by remember { mutableIntStateOf(0) }
+    var numIncorrect by remember { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
 
     Box(Modifier.zIndex(1f)) {
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
-            Text(currentQuestion.question)
+        Column(
+            modifier = Modifier
+                .padding(5.dp)
+                .verticalScroll(scrollState)
+        ) {
+            Text(questionList[indexCurrentQuestion].question)
         }
 
         Column {
             Spacer(Modifier.weight(1f))
-            AnswerBottomSheet(currentQuestion)
+            AnswerBottomSheet(questionList[indexCurrentQuestion]) { questionId, answerGiven, isCorrect ->
+                if (isCorrect) {
+                    numCorrect++
+                } else {
+                    numIncorrect++
+                }
+
+                if (indexCurrentQuestion < questionList.size - 1) {
+                    indexCurrentQuestion++
+                }
+            }
         }
     }
 }
 
 @Composable
-fun AnswerBottomSheet(question: Question) {
+fun AnswerBottomSheet(
+    question: Question,
+    onClickNext: (questionId: Int, answerGiven: Int, isCorrect: Boolean) -> Unit
+) {
     val radioOptions = listOf(question.answer1, question.answer2, question.answer3, question.answer4)
     val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
     var selectedInt by remember { mutableIntStateOf(radioOptions.indexOf(selectedOption)) }
     var submitButtonText by remember { mutableStateOf("確認") }
+    val scrollState = rememberScrollState()
 
     ExpandableBottomView {
         Column {
-            Column(Modifier.selectableGroup()) {
+            Column(Modifier
+                .verticalScroll(scrollState)
+                .weight(1f, fill = false)
+                .selectableGroup()
+            ) {
                 radioOptions.forEachIndexed { index, text ->
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .height(56.dp)
                             .selectable(
                                 selected = (text == selectedOption),
                                 onClick = { onOptionSelected(text) },
@@ -152,6 +175,7 @@ fun AnswerBottomSheet(question: Question) {
                                     shape = RoundedCornerShape(10.dp)
                                 )
                             })
+                            .padding(vertical = 5.dp)
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -176,6 +200,45 @@ fun AnswerBottomSheet(question: Question) {
                     onClick = {
                         if (selectedInt != -1) {
                             submitButtonText = "確認"
+                            //TODO: Load next question
+                            //Mutable list und mit remove?
+                            //Oder index speichern?
+                            //Lieber index speichern, da ja relearn status existiert
+                            //In jedem Fall muss hier mit callback gearbeitet werden
+                            //Was fur Infos mussen verarbeitet werden?
+                            //Letztendlich soll gespeichert werden welche Antwort und ob diese korrekt
+                            //also givenAnswer + isCorrect
+                            //Falls correct kommt die Frage in dieser Session nicht mehr hoch
+                            //Falls inkorrekt muss erneut kommen
+                            //Also 2 Listen?
+                            //Eine mit allen Fragen
+                            //Eine andere mit den questionId die noch due sind
+                            //Oder man konnte gleich die questionResults reinschmeissen
+                            //Es muss ja auch die Box verandert werden
+                            //Wenn das sofort passiert muss man nicht speichern, wie oft eine spezifische Frage in der Session falsch, oder?
+                            //Aber fur StudySession insg. wie viele correct, wie viele inkorrekt
+                            //Was muss sonst noch gespeichert werden?
+                            //StudySession:
+                            //numCorrect
+                            //numIncorrect
+                            //Answer:
+                            //questionId
+                            //answerGiven
+                            //isCorrect
+                            //QuestionResult:
+                            //questionId
+                            //Ob korrekt oder nicht
+                            //Daraus neuer status, dateDue, box
+                            //Macht das Sinn, hier nur zu speichern wie oft korrekt?
+                            //Sollte nicht auch numIncorrect pro Frage gespeichert werden?
+                            //Das kann aber eigentlich per answer herausgefunden werden
+                            //Macht der aktuelle Aufbau Sinn?
+                            //Man konnte gucken wie viele Answer Datensatze zu einer Question und dann minus numCorrect
+                            //Dann mussen nicht alle Answer Datensatze durchlaufen werden
+                            //TODO: Bei Import QuestionResult Datensatz anlegen?
+
+                            onClickNext(question.questionId, selectedInt, selectedInt == question.correctAnswer)
+                            selectedInt = -1
                         } else {
                             selectedInt = radioOptions.indexOf(selectedOption) + 1
                             submitButtonText = "次"

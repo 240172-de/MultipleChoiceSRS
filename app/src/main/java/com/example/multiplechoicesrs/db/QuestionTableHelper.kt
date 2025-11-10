@@ -10,6 +10,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import com.example.multiplechoicesrs.model.Question
 import com.example.multiplechoicesrs.model.QuestionJson
+import com.example.multiplechoicesrs.model.QuestionResult
+import com.example.multiplechoicesrs.model.QuestionStatus
 
 class QuestionTableHelper(context: Context) {
     private val dbHelper = DBHelper(context)
@@ -35,9 +37,13 @@ class QuestionTableHelper(context: Context) {
     @SuppressLint("Range")
     private fun getQuestions(whereClause: String, whereParams: Array<String>): List<Question> {
         val list = mutableListOf<Question>()
+        val tableWithJoin: String = DBHelper.TABLE_QUESTION +
+                " INNER JOIN " + DBHelper.TABLE_QUESTION_RESULT +
+                " ON " + DBHelper.TABLE_QUESTION + "." + DBHelper.QUESTION_ID + " = " + DBHelper.TABLE_QUESTION_RESULT + "." + DBHelper.QUESTION_ID
+
         dbHelper.readableDatabase.use { db ->
             val cursor = db.query(
-                DBHelper.TABLE_QUESTION,
+                tableWithJoin,
                 null,
                 whereClause,
                 whereParams,
@@ -48,6 +54,14 @@ class QuestionTableHelper(context: Context) {
 
             cursor.use {
                 while (it.moveToNext()) {
+                    val result = QuestionResult(
+                        it.getInt(it.getColumnIndex(DBHelper.QUESTION_ID)),
+                        it.getInt(it.getColumnIndex(DBHelper.NUM_CORRECT)),
+                        it.getString(it.getColumnIndex(DBHelper.DATE_DUE)),
+                        QuestionStatus.get(it.getInt(it.getColumnIndex(DBHelper.STATUS))),
+                        it.getInt(it.getColumnIndex(DBHelper.BOX)),
+                    )
+
                     list.add(
                         Question(
                             it.getInt(it.getColumnIndex(DBHelper.DECK_ID)),
@@ -66,6 +80,7 @@ class QuestionTableHelper(context: Context) {
                             it.getInt(it.getColumnIndex(DBHelper.CORRECT_ANSWER)),
                             it.getString(it.getColumnIndex(DBHelper.EXPLANATION)),
                             it.getString(it.getColumnIndex(DBHelper.SOURCE)),
+                            result
                         )
                     )
                 }
@@ -111,6 +126,21 @@ class QuestionTableHelper(context: Context) {
                 null,
                 values,
                 SQLiteDatabase.CONFLICT_REPLACE
+            )
+
+            val valuesQuestionResult = ContentValues().apply {
+                put(DBHelper.QUESTION_ID, question.questionId)
+                put(DBHelper.NUM_CORRECT, 0)
+                put(DBHelper.DATE_DUE, "")
+                put(DBHelper.STATUS, QuestionStatus.NEW.ordinal)
+                put(DBHelper.BOX, 0)
+            }
+
+            db.insertWithOnConflict(
+                DBHelper.TABLE_QUESTION_RESULT,
+                null,
+                valuesQuestionResult,
+                SQLiteDatabase.CONFLICT_IGNORE
             )
         }
     }

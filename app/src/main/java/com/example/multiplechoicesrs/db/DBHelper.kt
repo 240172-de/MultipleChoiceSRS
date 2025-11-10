@@ -67,7 +67,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
             it.execSQL(generateSQLTableQuestion())
             it.execSQL(generateSQLTableQuestionResult())
             it.execSQL(generateSQLTableAnswer())
-            it.execSQL(generateSQLTableStudySesion())
+            it.execSQL(generateSQLTableStudySession())
         }
     }
 
@@ -131,7 +131,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
                 ")"
     }
 
-    private fun generateSQLTableStudySesion(): String {
+    private fun generateSQLTableStudySession(): String {
         return "$CREATE_TABLE $TABLE_STUDY_SESSION(" +
                     "$STUDY_SESSION_ID $INTEGER $PRIM_KEY_AUTOINC," +
                     "$TIMESTAMP $TEXT," +

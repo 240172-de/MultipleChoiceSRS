@@ -1,11 +1,12 @@
 package com.example.multiplechoicesrs.model
 
-import java.time.LocalDateTime
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class QuestionResult(
     val questionId: Int,
     var numCorrect: Int,
-    var dateDue: LocalDateTime,
+    var dateDue: String,
     var status: QuestionStatus,
     var box: Int
 )

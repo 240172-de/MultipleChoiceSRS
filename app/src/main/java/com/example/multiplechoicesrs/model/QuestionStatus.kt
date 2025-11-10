@@ -4,5 +4,11 @@ enum class QuestionStatus {
     NEW,
     REVIEW,
     RELEARN,
-    RETIRED
+    RETIRED;
+
+    companion object {
+        fun get(ordinal: Int): QuestionStatus {
+            return entries[ordinal]
+        }
+    }
 }
