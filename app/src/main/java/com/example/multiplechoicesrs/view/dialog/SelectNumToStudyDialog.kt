@@ -49,7 +49,7 @@ fun SelectNumToStudyDialog(
             ) {
                 Text(deck.name, fontWeight = FontWeight.Bold)
 
-                if (!studyHelper.hasDueCards(categoryIdList)) {
+                if (!studyHelper.hasDueCards(deck.deckId, categoryIdList)) {
                     Text("No questions due. Study ahead?")
                 }
 

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 //Add IP to network_security_config.xml
 //Set IP here
 //Start server via php artisan serve --host IP --port 8000
-private const val IP_ADDRESS = ""
+private const val IP_ADDRESS = "192.168.91.31"
 private const val PORT = "8000"
 private const val BASE_URL = "http://$IP_ADDRESS:$PORT"
 
