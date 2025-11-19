@@ -57,7 +57,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         private const val INTEGER = "INTEGER"
         private const val PRIM_KEY = "PRIMARY KEY"
         private const val PRIM_KEY_AUTOINC = "PRIMARY KEY AUTOINCREMENT"
-        //TODO: No autoincrement when via server
     }
 
     override fun onCreate(p0: SQLiteDatabase?) {
@@ -76,7 +75,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
 
     private fun generateSQLTableDeck(): String {
         return "$CREATE_TABLE $TABLE_DECK(" +
-                    "$DECK_ID $INTEGER $PRIM_KEY_AUTOINC," +
+                    "$DECK_ID $INTEGER $PRIM_KEY," +
                     "$DECK_NAME $TEXT," +
                     "$VERSION_ID $INTEGER" +
                 ")"
@@ -85,7 +84,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
     private fun generateSQLTableCategory(): String {
         return "$CREATE_TABLE $TABLE_CATEGORY(" +
                     "$DECK_ID $INTEGER," +
-                    "$CATEGORY_ID $INTEGER $PRIM_KEY_AUTOINC," +
+                    "$CATEGORY_ID $INTEGER $PRIM_KEY," +
                     "$CATEGORY_NAME $TEXT" +
                 ")"
     }
@@ -94,7 +93,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         return "$CREATE_TABLE $TABLE_QUESTION(" +
                     "$DECK_ID $INTEGER," +
                     "$CATEGORY_ID $INTEGER," +
-                    "$QUESTION_ID $INTEGER $PRIM_KEY_AUTOINC," +
+                    "$QUESTION_ID $INTEGER $PRIM_KEY," +
                     "$QUESTION $TEXT," +
                     "$QUESTION_IMAGE $TEXT," +
                     "$ANSWER1 $TEXT," +

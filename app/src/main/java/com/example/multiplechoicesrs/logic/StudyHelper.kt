@@ -4,8 +4,10 @@ import android.content.Context
 import com.example.multiplechoicesrs.db.QuestionTableHelper
 import com.example.multiplechoicesrs.ext.getDueQuestions
 import com.example.multiplechoicesrs.ext.hasDueQuestions
+import com.example.multiplechoicesrs.model.Answer
 import com.example.multiplechoicesrs.model.Question
 import com.example.multiplechoicesrs.model.QuestionStatus
+import com.example.multiplechoicesrs.model.StudySession
 
 class StudyHelper(context: Context) {
     val questionTableHelper = QuestionTableHelper(context)
@@ -55,5 +57,35 @@ class StudyHelper(context: Context) {
         selectedQuestions.addAll(new.take(numNewToAdd))
 
         return selectedQuestions
+    }
+
+    fun onFinishStudySession(answerList: List<Answer>): StudySession {
+        //TODO: Erzeugen StudySession Datensatz
+        //TODO: Ermitteln neue Box + Status von QuestionResults
+        //TODO: Speichern in DB
+        var numCorrectSession = 0
+
+        answerList.groupBy { it.questionId }.forEach { questionId, answers ->
+            var numCorrectCurrentQuestion = 0
+            var isNewStatusReview = false
+
+            answers.forEach { answer ->
+                if (answer.isCorrect) {
+                    numCorrectCurrentQuestion++
+                    numCorrectSession++
+
+                    isNewStatusReview = true
+                }
+            }
+
+            //TODO: Neue Box + dateDue ermitteln
+            //Fur jede falsche Antwort 2 Boxen zuruck?
+            //TODO: Formel fur dateDue aus Box
+        }
+
+        return StudySession(
+            numCorrect = numCorrectSession,
+            numIncorrect = answerList.size - numCorrectSession
+        )
     }
 }
