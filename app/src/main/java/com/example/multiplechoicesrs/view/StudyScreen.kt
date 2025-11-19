@@ -28,7 +28,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -134,7 +133,7 @@ fun StudyScreen(
     onSubmitAnswer: (Answer) -> Unit,
     onFinish: () -> Unit
 ) {
-    val activeQuestionIds = remember { questionList.map { it.questionId }.toMutableStateList() }
+    val activeQuestionIds = questionList.map { it.questionId }.toMutableList()
     var indexCurrentQuestion by remember { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
 
@@ -203,7 +202,7 @@ fun AnswerBottomSheet(
                                 onClick = { onOptionSelected(text) },
                                 role = Role.RadioButton
                             )
-                            .modifyIf(selectedInt != -1, {
+                            .modifyIf(selectedInt != -1) {
                                 var color = Color.Transparent
                                 val index = index + 1
 
@@ -217,7 +216,7 @@ fun AnswerBottomSheet(
                                     border = BorderStroke(2.dp, color),
                                     shape = RoundedCornerShape(10.dp)
                                 )
-                            })
+                            }
                             .padding(vertical = 5.dp)
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -242,6 +241,7 @@ fun AnswerBottomSheet(
                     enabled = selectedOption.isNotEmpty(),
                     onClick = {
                         if (selectedInt != -1) {
+                            onOptionSelected("")
                             selectedInt = -1
                             submitButtonText = "確認"
 
