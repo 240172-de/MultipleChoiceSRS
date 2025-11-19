@@ -16,7 +16,7 @@ import androidx.navigation.toRoute
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.view.AnalysisScreen
 import com.example.multiplechoicesrs.view.CategoryListScreen
-import com.example.multiplechoicesrs.view.ContentAwareTopAppBar
+import com.example.multiplechoicesrs.view.custom.ContentAwareTopAppBar
 import com.example.multiplechoicesrs.view.DeckListScreen
 import com.example.multiplechoicesrs.view.ImportDataScreen
 import com.example.multiplechoicesrs.view.StudyScreenLoad

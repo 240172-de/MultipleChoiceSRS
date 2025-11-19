@@ -19,6 +19,11 @@ import androidx.compose.ui.unit.dp
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.model.Category
 import com.example.multiplechoicesrs.model.Deck
+import com.example.multiplechoicesrs.view.custom.CheckableItem
+import com.example.multiplechoicesrs.view.custom.CheckableList
+import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
+import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
+import com.example.multiplechoicesrs.view.custom.getCheckedIds
 import com.example.multiplechoicesrs.view.dialog.SelectNumToStudyDialog
 
 @Composable

@@ -19,6 +19,8 @@ import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.DeckTableHelper
 import com.example.multiplechoicesrs.model.Deck
+import com.example.multiplechoicesrs.view.custom.ProvideAppBarActions
+import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
 
 @Composable
 fun DeckListScreen(

@@ -48,6 +48,9 @@ import com.example.multiplechoicesrs.model.Question
 import com.example.multiplechoicesrs.model.StudySession
 import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
+import com.example.multiplechoicesrs.view.custom.ExpandableBottomView
+import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
+import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
 import com.example.multiplechoicesrs.view.dialog.ResultDialog
 
 @Composable
@@ -188,10 +191,11 @@ fun AnswerBottomSheet(
 
     ExpandableBottomView {
         Column {
-            Column(Modifier
-                .verticalScroll(scrollState)
-                .weight(1f, fill = false)
-                .selectableGroup()
+            Column(
+                Modifier
+                    .verticalScroll(scrollState)
+                    .weight(1f, fill = false)
+                    .selectableGroup()
             ) {
                 radioOptions.forEachIndexed { index, text ->
                     Row(
@@ -250,13 +254,15 @@ fun AnswerBottomSheet(
                             selectedInt = radioOptions.indexOf(selectedOption) + 1
                             submitButtonText = "次"
 
-                            onSubmitAnswer(Answer(
-                                questionId = question.questionId,
-                                answerGiven = selectedInt,
-                                isCorrect = selectedInt == question.correctAnswer
-                            ))
+                            onSubmitAnswer(
+                                Answer(
+                                    questionId = question.questionId,
+                                    answerGiven = selectedInt,
+                                    isCorrect = selectedInt == question.correctAnswer
+                                )
+                            )
                         }
-                }) {
+                    }) {
                     Text(submitButtonText)
                 }
             }

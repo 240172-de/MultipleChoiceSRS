@@ -1,8 +1,6 @@
-package com.example.multiplechoicesrs.view
+package com.example.multiplechoicesrs.view.custom
 
-import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
