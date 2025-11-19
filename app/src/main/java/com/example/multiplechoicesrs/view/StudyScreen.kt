@@ -1,6 +1,5 @@
 package com.example.multiplechoicesrs.view
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -47,8 +46,10 @@ import com.example.multiplechoicesrs.logic.StudyHelper
 import com.example.multiplechoicesrs.model.Answer
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.model.Question
+import com.example.multiplechoicesrs.model.StudySession
 import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
+import com.example.multiplechoicesrs.view.dialog.ResultDialog
 
 @Composable
 fun StudyScreenLoad(
@@ -60,6 +61,7 @@ fun StudyScreenLoad(
 ) {
     val studyHelper = StudyHelper(LocalContext.current)
     val answerList = mutableListOf<Answer>()
+    var result: StudySession? by remember { mutableStateOf(null)  }
 
     ProvideAppBarTitle {
         Text(deck.name)
@@ -68,7 +70,7 @@ fun StudyScreenLoad(
     ProvideAppBarNavigationIcon {
         IconButton(
             onClick = {
-                finishStudySession(studyHelper, answerList, navToDeckList)
+                result = studyHelper.onFinishStudySession(answerList)
             }
         ) {
             Icon(
@@ -79,8 +81,17 @@ fun StudyScreenLoad(
     }
 
     var questionList by remember { mutableStateOf(emptyList<Question>()) }
-
     questionList = studyHelper.getQuestions(deck.deckId, categoryIdList, numToStudy)
+
+    if (result != null) {
+        ResultDialog(
+            result!!.numCorrect,
+            result!!.numIncorrect,
+        ) {
+            result = null
+            navToDeckList()
+        }
+    }
 
     if (questionList.isEmpty()) {
         Dialog(
@@ -103,7 +114,7 @@ fun StudyScreenLoad(
                     answerList.add(answer)
                 },
                 onFinish = {
-                    finishStudySession(studyHelper, answerList, navToDeckList)
+                    result = studyHelper.onFinishStudySession(answerList)
                 })
         }
     }
@@ -243,11 +254,4 @@ fun AnswerBottomSheet(
             }
         }
     }
-}
-
-private fun finishStudySession(studyHelper: StudyHelper, answerList: List<Answer>, navToDeckList: () -> Unit) {
-    //TODO: Display Results (dialog)
-    val results = studyHelper.onFinishStudySession(answerList)
-    Log.d("TEST", "$results")
-    navToDeckList()
 }
