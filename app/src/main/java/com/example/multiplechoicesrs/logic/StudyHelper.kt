@@ -79,7 +79,9 @@ class StudyHelper(context: Context) {
             numIncorrect = answerList.size - numCorrectSession
         )
 
-        studySessionTableHelper.saveStudySession(studySession)
+        if (answerList.isNotEmpty()) {
+            studySessionTableHelper.saveStudySession(studySession)
+        }
 
         return studySession
     }

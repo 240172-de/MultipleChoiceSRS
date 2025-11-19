@@ -76,7 +76,7 @@ fun SegmentedRing(
     )
 
     val textMeasurer = rememberTextMeasurer()
-    val textToDraw = "$numCorrect / $numIncorrect"
+    val textToDraw = "$numCorrect / $numTotal"
 
     val style = TextStyle(
         fontSize = 28.sp,

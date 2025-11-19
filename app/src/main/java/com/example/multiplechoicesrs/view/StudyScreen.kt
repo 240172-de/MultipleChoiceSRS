@@ -84,12 +84,20 @@ fun StudyScreenLoad(
     questionList = studyHelper.getQuestions(deck.deckId, categoryIdList, numToStudy)
 
     if (result != null) {
-        ResultDialog(
-            result!!.numCorrect,
-            result!!.numIncorrect,
-        ) {
+        val onDismiss = {
             result = null
             navToDeckList()
+        }
+
+        if (result!!.numCorrect > 0 || result!!.numIncorrect > 0) {
+            ResultDialog(
+                result!!.numCorrect,
+                result!!.numIncorrect,
+            ) {
+                onDismiss()
+            }
+        } else {
+            onDismiss()
         }
     }
 
