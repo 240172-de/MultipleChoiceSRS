@@ -37,7 +37,8 @@ import com.example.multiplechoicesrs.view.dialog.SelectNumToStudyDialog
 fun DeckList(
     decks: List<Deck>,
     navToCategoryList: (deck: Deck) -> Unit,
-    navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit
+    navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit,
+    navToAnalysis: (deck: Deck) -> Unit
 ) {
     var selectedDeck: Deck? by remember { mutableStateOf(null) }
     var selectedCategoryIdList: List<Int> by remember { mutableStateOf(emptyList()) }
@@ -58,7 +59,7 @@ fun DeckList(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(decks) { deck ->
-            DeckItem(deck, navToCategoryList) { deck, categoryIdList ->
+            DeckItem(deck, navToCategoryList, navToAnalysis) { deck, categoryIdList ->
                 selectedCategoryIdList = categoryIdList
                 selectedDeck = deck
                 showSelectNumDialog = true
@@ -71,7 +72,8 @@ fun DeckList(
 fun DeckItem(
     deck: Deck,
     navToCategoryList: (deck: Deck) -> Unit,
-    onClickStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit
+    navToAnalysis: (Deck) -> Unit,
+    onClickStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
@@ -96,8 +98,7 @@ fun DeckItem(
 
                 OutlinedButton(
                     onClick = {
-                        //TODO: AnalysisScreen
-                        Log.d("TEST", "Show Analysis Screen")
+                        navToAnalysis(deck)
                     },
                     modifier = Modifier.size(46.dp),
                     contentPadding = PaddingValues(0.dp),

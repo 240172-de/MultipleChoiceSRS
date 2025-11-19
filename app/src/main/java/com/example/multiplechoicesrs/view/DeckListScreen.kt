@@ -25,6 +25,7 @@ fun DeckListScreen(
     navToImport: () -> Unit,
     navToCategoryList: (deck: Deck) -> Unit,
     navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit,
+    navToAnalysis: (deck: Deck) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val decks = loadDecks(LocalContext.current)
@@ -48,7 +49,7 @@ fun DeckListScreen(
         if (decks.isEmpty()) {
             NoDeckDataScreen(navToImport)
         } else {
-            DeckList(decks, navToCategoryList, navToStudy)
+            DeckList(decks, navToCategoryList, navToStudy, navToAnalysis)
         }
     }
 }

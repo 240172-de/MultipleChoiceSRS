@@ -21,4 +21,9 @@ sealed class Screen {
         val categoryIdList: List<Int>,
         val numToStudy: Int
     )
+
+    @Serializable
+    data class AnalysisScreen(
+        val deck: Deck
+    )
 }

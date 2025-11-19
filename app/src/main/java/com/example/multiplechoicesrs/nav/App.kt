@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.multiplechoicesrs.model.Deck
+import com.example.multiplechoicesrs.view.AnalysisScreen
 import com.example.multiplechoicesrs.view.CategoryListScreen
 import com.example.multiplechoicesrs.view.ContentAwareTopAppBar
 import com.example.multiplechoicesrs.view.DeckListScreen
@@ -56,11 +57,14 @@ fun App() {
                     navToImport = {
                         navController.navigate(Screen.ImportDataScreen)
                     },
-                    navToCategoryList = { deckId ->
-                        navController.navigate(Screen.CategoryListScreen(deckId))
+                    navToCategoryList = { deck ->
+                        navController.navigate(Screen.CategoryListScreen(deck))
                     },
                     navToStudy = { deckId, categoryIdList, numToStudy ->
                         navController.navigate(Screen.StudyScreen(deckId, categoryIdList, numToStudy))
+                    },
+                    navToAnalysis = { deck ->
+                        navController.navigate(Screen.AnalysisScreen(deck))
                     },
                     modifier = Modifier
                         .padding(innerPadding)
@@ -101,6 +105,22 @@ fun App() {
                     navToDeckList = {
                         navController.navigate(Screen.DeckListScreen)
                     },
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                )
+            }
+
+            composable<Screen.AnalysisScreen>(
+                typeMap = mapOf(
+                    typeOf<Deck>() to navTypeOf<Deck>()
+                )
+            ) {
+                val args = it.toRoute<Screen.AnalysisScreen>()
+
+                AnalysisScreen(
+                    deck = args.deck,
+                    navBack = navController::popBackStack,
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()
