@@ -1,16 +1,24 @@
 package com.example.multiplechoicesrs.logic
 
 import android.content.Context
+import com.example.multiplechoicesrs.db.AnswerTableHelper
+import com.example.multiplechoicesrs.db.QuestionResultTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
+import com.example.multiplechoicesrs.db.StudySessionTableHelper
 import com.example.multiplechoicesrs.ext.getDueQuestions
 import com.example.multiplechoicesrs.ext.hasDueQuestions
 import com.example.multiplechoicesrs.model.Answer
 import com.example.multiplechoicesrs.model.Question
 import com.example.multiplechoicesrs.model.QuestionStatus
 import com.example.multiplechoicesrs.model.StudySession
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class StudyHelper(context: Context) {
-    val questionTableHelper = QuestionTableHelper(context)
+    private val questionTableHelper = QuestionTableHelper(context)
+    private val studySessionTableHelper = StudySessionTableHelper(context)
+    private val questionResultTableHelper = QuestionResultTableHelper(context)
+    private val answerTableHelper = AnswerTableHelper(context)
 
     fun hasDueCards(deckId: Int, categoryIdList: List<Int>): Boolean {
         val allQuestions = questionTableHelper.getQuestions(deckId, categoryIdList)
@@ -60,32 +68,61 @@ class StudyHelper(context: Context) {
     }
 
     fun onFinishStudySession(answerList: List<Answer>): StudySession {
-        //TODO: Erzeugen StudySession Datensatz
-        //TODO: Ermitteln neue Box + Status von QuestionResults
-        //TODO: Speichern in DB
         var numCorrectSession = 0
 
         answerList.groupBy { it.questionId }.forEach { questionId, answers ->
-            var numCorrectCurrentQuestion = 0
-            var isNewStatusReview = false
-
-            answers.forEach { answer ->
-                if (answer.isCorrect) {
-                    numCorrectCurrentQuestion++
-                    numCorrectSession++
-
-                    isNewStatusReview = true
-                }
-            }
-
-            //TODO: Neue Box + dateDue ermitteln
-            //Fur jede falsche Antwort 2 Boxen zuruck?
-            //TODO: Formel fur dateDue aus Box
+            numCorrectSession += updateQuestionResult(questionId, answers)
         }
 
-        return StudySession(
+        val studySession = StudySession(
             numCorrect = numCorrectSession,
             numIncorrect = answerList.size - numCorrectSession
         )
+
+        studySessionTableHelper.saveStudySession(studySession)
+
+        return studySession
+    }
+
+    /**
+     * Returns 1 if answered correctly, 0 otherwise
+     */
+    private fun updateQuestionResult(questionId: Int, answerList: List<Answer>): Int {
+        val questionResult = questionResultTableHelper.getQuestionResult(questionId)!!
+
+        var isNewStatusReview = false
+        var newBox = questionResult.box
+
+        answerList.forEach { answer ->
+            if (answer.isCorrect) {
+                isNewStatusReview = true
+            } else {
+                newBox -= 2
+            }
+
+            answerTableHelper.saveAnswer(answer)
+        }
+
+        if (answerList.size == 1) {
+            newBox++
+        } else if (newBox < 0) {
+            newBox = 0
+        }
+
+        val numCorrect = if (isNewStatusReview) 1 else 0
+
+        questionResult.numCorrect += numCorrect
+        questionResult.dateDue = getDateDue(newBox)
+        questionResult.status = if (isNewStatusReview) QuestionStatus.REVIEW else QuestionStatus.RELEARN
+        questionResult.box = newBox
+
+        questionResultTableHelper.saveQuestionResult(questionResult)
+
+        return numCorrect
+    }
+
+    private fun getDateDue(box: Int): String {
+        //TODO Formel fur neues Datum
+        return ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Japan")).toString()
     }
 }
