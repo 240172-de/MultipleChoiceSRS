@@ -12,5 +12,8 @@ data class Deck(
     @SerialName("version_id")
     val versionId: Int,
     var categories: List<Category>? = null,
-    var questions: List<Question>? = null
+    var questions: List<Question>? = null,
+
+    @SerialName("questions_json")
+    var questionsJson: List<QuestionJson>? = null
 )

@@ -23,19 +23,26 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.multiplechoicesrs.R
+import com.example.multiplechoicesrs.db.CategoryTableHelper
+import com.example.multiplechoicesrs.db.DeckTableHelper
+import com.example.multiplechoicesrs.db.QuestionTableHelper
 import com.example.multiplechoicesrs.model.DecksJson
 import com.example.multiplechoicesrs.rest.ImportDecksUiState
 import com.example.multiplechoicesrs.rest.ImportDecksViewModel
+import com.example.multiplechoicesrs.rest.MultipleChoiceApi
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
+import kotlinx.coroutines.launch
 
 @Composable
 fun ImportDataScreen(
@@ -83,6 +90,11 @@ fun ImportDecksScreen(
 
 @Composable
 fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
+    val deckTableHelper = DeckTableHelper(LocalContext.current)
+    val categoryTableHelper = CategoryTableHelper(LocalContext.current)
+    val questionTableHelper = QuestionTableHelper(LocalContext.current)
+    val coroutineScope = rememberCoroutineScope()
+
     LazyColumn(
         modifier = modifier.padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -107,10 +119,26 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
                     )
 
                     Button(onClick = {
-                        Log.d("TEST", "import ${deck.name} clicked")
                         //TODO: Check ob import notwendig (version_id)
                         //Falls nicht: dialog
-                        //TODO: Import der Daten
+                        coroutineScope.launch {
+                            try {
+                                val result = MultipleChoiceApi.retrofitService.importDeck(deck.deckId)
+
+                                deckTableHelper.saveDeck(result)
+                                result.categories?.forEach {
+                                    categoryTableHelper.saveCategory(it)
+                                }
+                                result.questionsJson?.forEach {
+                                    questionTableHelper.saveQuestion(it)
+                                }
+
+                                //TODO: Erfolgsmeldung
+                            } catch (e: Exception) {
+                                Log.d("TEST", e.toString())
+                                //TODO: Fehlermeldung
+                            }
+                        }
                     }) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_download_24),
