@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -136,7 +137,7 @@ fun StudyScreen(
     onSubmitAnswer: (Answer) -> Unit,
     onFinish: () -> Unit
 ) {
-    val activeQuestionIds = questionList.map { it.questionId }.toMutableList()
+    val activeQuestionIds = remember { questionList.map { it.questionId }.toMutableStateList() }
     var indexCurrentQuestion by remember { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
 

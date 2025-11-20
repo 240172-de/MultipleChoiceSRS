@@ -13,6 +13,7 @@ import com.example.multiplechoicesrs.model.QuestionStatus
 import com.example.multiplechoicesrs.model.StudySession
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import kotlin.math.pow
 
 class StudyHelper(context: Context) {
     private val questionTableHelper = QuestionTableHelper(context)
@@ -124,7 +125,20 @@ class StudyHelper(context: Context) {
     }
 
     private fun getDateDue(box: Int): String {
-        //TODO Formel fur neues Datum
-        return ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Japan")).toString()
+        val interval = when(box) {
+            in 0..1 -> 3.0.pow(box)
+            in 2..3 -> 7 * 2.0.pow(box - 2)
+            in 4..6 -> 30 * 3.0.pow(box - 4)
+            in 7..9 -> 365 * 2.0.pow(box - 7)
+            else -> 10.0
+        }.toLong()
+
+        return ZonedDateTime.now()
+            .withZoneSameInstant(ZoneId.of("Japan"))
+            .plusDays(interval)
+            .withHour(3)
+            .withMinute(0)
+            .withSecond(0)
+            .toString()
     }
 }
