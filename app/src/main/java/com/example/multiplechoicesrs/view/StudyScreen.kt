@@ -52,6 +52,7 @@ import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 import com.example.multiplechoicesrs.view.custom.ExpandableBottomView
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
+import com.example.multiplechoicesrs.view.dialog.LoadingSpinnerDialog
 import com.example.multiplechoicesrs.view.dialog.ResultDialog
 
 @Composable
@@ -105,19 +106,7 @@ fun StudyScreenLoad(
     }
 
     if (questionList.isEmpty()) {
-        Dialog(
-            onDismissRequest = { },
-            DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
-        ) {
-            Box(
-                contentAlignment= Alignment.Center,
-                modifier = Modifier
-                    .size(100.dp)
-                    .background(White, shape = RoundedCornerShape(8.dp))
-            ) {
-                CircularProgressIndicator()
-            }
-        }
+        LoadingSpinnerDialog()
     } else {
         Column(modifier) {
             StudyScreen(questionList,

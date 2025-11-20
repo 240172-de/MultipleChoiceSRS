@@ -17,3 +17,4 @@ val MutedBlack = Color(0xFF030504)
 
 val GreenCorrectAnswer = Color(0xFF377958)
 val RedIncorrectAnswer = Color(0xFFAD0000)
+val YellowWaring = Color(0xFFBA8E23)

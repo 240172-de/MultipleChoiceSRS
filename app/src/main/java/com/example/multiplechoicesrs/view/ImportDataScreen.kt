@@ -47,6 +47,7 @@ import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.DeckTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
 import com.example.multiplechoicesrs.model.DecksJson
+import com.example.multiplechoicesrs.model.SnackbarColor
 import com.example.multiplechoicesrs.rest.ImportDecksUiState
 import com.example.multiplechoicesrs.rest.ImportDecksViewModel
 import com.example.multiplechoicesrs.rest.MultipleChoiceApi
@@ -54,6 +55,7 @@ import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
+import com.example.multiplechoicesrs.view.dialog.LoadingSpinnerDialog
 import com.example.multiplechoicesrs.view.dialog.UpToDateDialog
 import kotlinx.coroutines.launch
 
@@ -110,8 +112,9 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    var importStatus by remember { mutableStateOf(ImportStatus.UNKNOWN) }
+    var importStatus by remember { mutableStateOf(SnackbarColor.INFO) }
     var showUpToDateDialog by remember { mutableStateOf(false) }
+    var showLoadingSpinner by remember { mutableStateOf(false) }
 
     if (showUpToDateDialog) {
         UpToDateDialog {
@@ -119,11 +122,16 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
         }
     }
 
+    if (showLoadingSpinner) {
+        LoadingSpinnerDialog()
+    }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(snackbarHostState) { data ->
                 Snackbar(
-                    containerColor = getSnackbarColor(importStatus),
+                    containerColor = importStatus.backgroundColor,
+                    contentColor = importStatus.foregroundColor,
                     snackbarData = data
                 )
             }
@@ -162,6 +170,8 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
                             }
 
                             coroutineScope.launch {
+                                showLoadingSpinner = true
+
                                 try {
                                     val result = MultipleChoiceApi.retrofitService.importDeck(deck.deckId)
 
@@ -173,11 +183,13 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
                                         questionTableHelper.saveQuestion(it)
                                     }
 
-                                    importStatus = ImportStatus.SUCCESS
+                                    showLoadingSpinner = false
+                                    importStatus = SnackbarColor.SUCCESS
                                     snackbarHostState.showSnackbar("デッキがインポートされました")
                                 } catch (e: Exception) {
                                     Log.d("ERROR", e.toString())
-                                    importStatus = ImportStatus.FAILURE
+                                    showLoadingSpinner = false
+                                    importStatus = SnackbarColor.FAILURE
                                     snackbarHostState.showSnackbar("障害が発生しました")
                                 }
                             }
@@ -191,20 +203,6 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
                 }
             }
         }
-    }
-}
-
-enum class ImportStatus {
-    SUCCESS,
-    FAILURE,
-    UNKNOWN
-}
-
-fun getSnackbarColor(importStatus: ImportStatus): Color {
-    return when(importStatus) {
-        ImportStatus.SUCCESS -> GreenCorrectAnswer
-        ImportStatus.FAILURE -> RedIncorrectAnswer
-        ImportStatus.UNKNOWN -> Color.Gray
     }
 }
 
