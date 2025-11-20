@@ -37,7 +37,7 @@ fun ExpandableView(title:String, initialExpandedState: Boolean = true, content: 
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.background,
         ),
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
