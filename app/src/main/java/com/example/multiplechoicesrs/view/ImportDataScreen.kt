@@ -54,6 +54,7 @@ import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
+import com.example.multiplechoicesrs.view.dialog.UpToDateDialog
 import kotlinx.coroutines.launch
 
 @Composable
@@ -110,6 +111,13 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     var importStatus by remember { mutableStateOf(ImportStatus.UNKNOWN) }
+    var showUpToDateDialog by remember { mutableStateOf(false) }
+
+    if (showUpToDateDialog) {
+        UpToDateDialog {
+            showUpToDateDialog = false
+        }
+    }
 
     Scaffold(
         snackbarHost = {
@@ -145,8 +153,14 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
                         )
 
                         Button(onClick = {
-                            //TODO: Check ob import notwendig (version_id)
-                            //Falls nicht: dialog
+                            if(deckTableHelper.getDecks().any { savedDeck ->
+                                savedDeck.deckId == deck.deckId &&
+                                        savedDeck.versionId == deck.versionId
+                            }) {
+                                showUpToDateDialog = true
+                                return@Button
+                            }
+
                             coroutineScope.launch {
                                 try {
                                     val result = MultipleChoiceApi.retrofitService.importDeck(deck.deckId)
