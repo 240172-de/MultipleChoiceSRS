@@ -64,7 +64,6 @@ enum class AnalysisDestination(
     val label: String
 ) {
     DECK("deck", "全体"),
-//    CATEGORY("category", "分野"),
     QUESTION("question", "問題"),
 }
 
@@ -84,12 +83,7 @@ fun AppNavHost(
             composable(destination.route) {
                 when (destination) {
                     AnalysisDestination.DECK -> AnalysisDeck(deck)
-//                    AnalysisDestination.CATEGORY -> {
-//                        Text("Category")
-//                    }
-                    AnalysisDestination.QUESTION -> {
-                        Text("Question")
-                    }
+                    AnalysisDestination.QUESTION -> AnalysisQuestion(deck)
                 }
             }
         }
