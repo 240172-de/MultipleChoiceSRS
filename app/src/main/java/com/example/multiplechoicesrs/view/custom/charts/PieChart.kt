@@ -43,7 +43,7 @@ fun PieChart(data: PieChartData) {
                             ViewGroup.LayoutParams.MATCH_PARENT,
                         )
                         centerText = pieChartData.centerText
-                        setCenterTextSize(24f)
+                        setCenterTextSize(22f)
                         setCenterTextTypeface(Typeface.DEFAULT_BOLD)
 
                         description.isEnabled = false
