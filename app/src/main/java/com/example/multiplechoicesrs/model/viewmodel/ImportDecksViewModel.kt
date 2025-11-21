@@ -1,4 +1,4 @@
-package com.example.multiplechoicesrs.rest
+package com.example.multiplechoicesrs.model.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.multiplechoicesrs.model.DecksJson
+import com.example.multiplechoicesrs.rest.MultipleChoiceApi
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException

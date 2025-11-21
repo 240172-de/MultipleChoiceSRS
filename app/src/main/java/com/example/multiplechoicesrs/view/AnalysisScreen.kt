@@ -42,10 +42,14 @@ fun AnalysisScreen(
 
         //Auf Deck Level:
         //Anteil richtig je Kategorie (genormt auf 1)?
+        //Anteil richtig gesamt
+        //Anteil richtig erstes Mal/zweites Mal/...?
 
         //Auf Category Level:
         //Liste der Kategorien (aufklappbar)
         //Pie Anteil Richtig
+        //Braucht man das wirklich?
+        //Ist ja schon vom Deck aus sehbar
 
         //Auf Question Level:
         //Liste an Categories (jeweils ausklappbar)

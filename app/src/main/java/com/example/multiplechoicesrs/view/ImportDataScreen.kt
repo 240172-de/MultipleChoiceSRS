@@ -35,7 +35,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,11 +47,9 @@ import com.example.multiplechoicesrs.db.DeckTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
 import com.example.multiplechoicesrs.model.DecksJson
 import com.example.multiplechoicesrs.model.SnackbarColor
-import com.example.multiplechoicesrs.rest.ImportDecksUiState
-import com.example.multiplechoicesrs.rest.ImportDecksViewModel
+import com.example.multiplechoicesrs.model.viewmodel.ImportDecksUiState
+import com.example.multiplechoicesrs.model.viewmodel.ImportDecksViewModel
 import com.example.multiplechoicesrs.rest.MultipleChoiceApi
-import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
-import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
 import com.example.multiplechoicesrs.view.dialog.LoadingSpinnerDialog
