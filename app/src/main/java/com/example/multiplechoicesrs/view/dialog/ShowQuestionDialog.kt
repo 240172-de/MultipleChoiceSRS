@@ -1,5 +1,6 @@
 package com.example.multiplechoicesrs.view.dialog
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,18 @@ fun ShowQuestionDialog(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(question.question, Modifier.padding(bottom = 10.dp))
+
+                question.questionImage?.let {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            bitmap = it,
+                            contentDescription = ""
+                        )
+                    }
+                }
 
                 Text("ア：${question.answer1}")
                 Text("イ：${question.answer2}")

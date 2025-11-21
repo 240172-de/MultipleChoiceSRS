@@ -1,22 +1,21 @@
 package com.example.multiplechoicesrs.view
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,13 +31,10 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.ext.modifyIf
@@ -64,7 +60,7 @@ fun StudyScreenLoad(
     modifier: Modifier = Modifier
 ) {
     val studyHelper = StudyHelper(LocalContext.current)
-    val answerList = mutableListOf<Answer>()
+    val answerList = remember { emptyList<Answer>().toMutableStateList() }
     var result: StudySession? by remember { mutableStateOf(null)  }
 
     ProvideAppBarTitle {
@@ -137,6 +133,18 @@ fun StudyScreen(
                 .verticalScroll(scrollState)
         ) {
             Text(questionList[indexCurrentQuestion].question)
+
+            questionList[indexCurrentQuestion].questionImage?.let {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        bitmap = it,
+                        contentDescription = ""
+                    )
+                }
+            }
         }
 
         Column {
