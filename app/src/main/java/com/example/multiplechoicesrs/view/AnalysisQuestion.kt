@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.multiplechoicesrs.R
+import com.example.multiplechoicesrs.model.Category
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.model.Question
 import com.example.multiplechoicesrs.model.viewmodel.AnalysisQuestionData
@@ -33,6 +35,7 @@ import com.example.multiplechoicesrs.model.viewmodel.AnalysisQuestionUiState
 import com.example.multiplechoicesrs.model.viewmodel.AnalysisQuestionViewModel
 import com.example.multiplechoicesrs.view.custom.ExpandableView
 import com.example.multiplechoicesrs.view.custom.charts.PieChart
+import com.example.multiplechoicesrs.view.dialog.FilterCategoriesDialog
 import com.example.multiplechoicesrs.view.dialog.ShowQuestionDialog
 
 @Composable
@@ -54,13 +57,21 @@ fun AnalysisQuestionRouting(
     when(analysisQuestionUiState) {
         is AnalysisQuestionUiState.Loading -> LoadingScreen()
         is AnalysisQuestionUiState.NoData -> NoDataScreen()
-        is AnalysisQuestionUiState.Success -> AnalysisQuestionList(analysisQuestionUiState.data)
+        is AnalysisQuestionUiState.Success -> AnalysisQuestionList(
+            analysisQuestionUiState.data,
+            analysisQuestionUiState.categories
+        )
     }
 }
 
 @Composable
-fun AnalysisQuestionList(list: List<AnalysisQuestionData>) {
+fun AnalysisQuestionList(
+    list: List<AnalysisQuestionData>,
+    categoryList: List<Category>
+) {
     var filterText by remember { mutableStateOf("") }
+    val filterCategoryId = remember { emptyList<Int>().toMutableStateList() }
+    var showFilterCategoryDialog by remember { mutableStateOf(false) }
 
     var selectedQuestion: Question? by remember { mutableStateOf(null) }
     var showQuestionDialog by remember { mutableStateOf(false) }
@@ -69,6 +80,21 @@ fun AnalysisQuestionList(list: List<AnalysisQuestionData>) {
         ShowQuestionDialog(selectedQuestion!!) {
             showQuestionDialog = false
         }
+    }
+
+    if (showFilterCategoryDialog) {
+        FilterCategoriesDialog(
+            allCategories = categoryList,
+            onSubmit = {
+                //TODO: Better handling
+                filterCategoryId.addAll(it)
+                filterCategoryId.retainAll(it)
+                showFilterCategoryDialog = false
+            },
+            onDismissRequest = {
+                showFilterCategoryDialog = false
+            }
+        )
     }
 
     Column(
@@ -92,7 +118,7 @@ fun AnalysisQuestionList(list: List<AnalysisQuestionData>) {
 
             OutlinedButton(
                 onClick = {
-                    //TODO: Filter categories
+                    showFilterCategoryDialog = true
                 },
                 modifier = Modifier.size(46.dp),
                 contentPadding = PaddingValues(0.dp),
@@ -112,7 +138,10 @@ fun AnalysisQuestionList(list: List<AnalysisQuestionData>) {
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(list.filter { item ->
-                item.question.source.contains(filterText)
+                item.question.source.contains(filterText) &&
+                        (filterCategoryId.isEmpty() ||
+                                filterCategoryId.contains(item.question.categoryId)
+                                )
             }) { item ->
                 AnalysisQuestionItem(item) {
                     selectedQuestion = item.question

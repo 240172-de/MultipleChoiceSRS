@@ -7,7 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.multiplechoicesrs.db.AnswerTableHelper
+import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
+import com.example.multiplechoicesrs.model.Category
 import com.example.multiplechoicesrs.model.PieChartData
 import com.example.multiplechoicesrs.model.PieChartDataEntry
 import com.example.multiplechoicesrs.model.Question
@@ -21,7 +23,10 @@ data class AnalysisQuestionData(
 )
 
 sealed interface AnalysisQuestionUiState {
-    data class Success(val data: List<AnalysisQuestionData>): AnalysisQuestionUiState
+    data class Success(
+        val data: List<AnalysisQuestionData>,
+        val categories: List<Category>
+    ): AnalysisQuestionUiState
     object Loading: AnalysisQuestionUiState
     object NoData: AnalysisQuestionUiState
 }
@@ -30,6 +35,7 @@ class AnalysisQuestionViewModel(
     context: Context,
     private val deckId: Int
 ): ViewModel() {
+    val categoryTableHelper = CategoryTableHelper(context)
     val questionTableHelper = QuestionTableHelper(context)
     val answerTableHelper = AnswerTableHelper(context)
     var analysisQuestionUiState: AnalysisQuestionUiState by mutableStateOf(AnalysisQuestionUiState.Loading)
@@ -70,10 +76,20 @@ class AnalysisQuestionViewModel(
                 }
             }
 
+            val categoryIds = data.distinctBy { data ->
+                data.question.categoryId
+            }.map { data ->
+                data.question.categoryId
+            }
+
+            val categoryList = categoryTableHelper.getCategories(deckId).filter { category ->
+                categoryIds.contains(category.categoryId)
+            }
+
             analysisQuestionUiState = if (data.isEmpty()) {
                 AnalysisQuestionUiState.NoData
             } else {
-                AnalysisQuestionUiState.Success(data)
+                AnalysisQuestionUiState.Success(data, categoryList)
             }
         }
     }
