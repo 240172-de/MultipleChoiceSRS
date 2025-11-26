@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.multiplechoicesrs.db.AnswerTableHelper
+import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
 import com.example.multiplechoicesrs.model.Answer
 import com.example.multiplechoicesrs.model.PieChartData
@@ -16,7 +17,11 @@ import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 import kotlinx.coroutines.launch
 
 sealed interface AnalysisDeckUiState {
-    data class Success(val pieChartData: PieChartData): AnalysisDeckUiState
+    data class Success(
+        val pieChartData: PieChartData,
+        val barChartDataTotal: Map<String, Float>,
+        val barChartDataNormed: Map<String, Float>
+    ): AnalysisDeckUiState
     object Loading: AnalysisDeckUiState
     object NoData: AnalysisDeckUiState
 }
@@ -25,6 +30,7 @@ class AnalysisDeckViewModel(
     context: Context,
     private val deckId: Int
 ): ViewModel() {
+    val categoryTableHelper = CategoryTableHelper(context)
     val questionTableHelper = QuestionTableHelper(context)
     val answerTableHelper = AnswerTableHelper(context)
     var analysisDeckUiState: AnalysisDeckUiState by mutableStateOf(AnalysisDeckUiState.Loading)
@@ -38,11 +44,11 @@ class AnalysisDeckViewModel(
         viewModelScope.launch {
             analysisDeckUiState = AnalysisDeckUiState.Loading
 
-            val questionIds = questionTableHelper.getQuestions(deckId).map { it.questionId }
+            val questionList = questionTableHelper.getQuestions(deckId)
             val answers = mutableListOf<Answer>()
 
-            questionIds.forEach { questionId ->
-                answers.addAll(answerTableHelper.getAnswers(questionId))
+            questionList.forEach { question ->
+                answers.addAll(answerTableHelper.getAnswers(question.questionId))
             }
 
             if (answers.isEmpty()) {
@@ -55,14 +61,59 @@ class AnalysisDeckViewModel(
                 val percentageCorrect = numCorrect.toFloat() / numTotal
                 val percentageIncorrect = numIncorrect.toFloat() / numTotal
 
-                analysisDeckUiState = AnalysisDeckUiState.Success(
-                    PieChartData(
-                        "全体",
-                        listOf(
-                            PieChartDataEntry("正解", percentageCorrect, GreenCorrectAnswer),
-                            PieChartDataEntry("不正解", percentageIncorrect, RedIncorrectAnswer)
-                        )
+                val pieChartData = PieChartData(
+                    "全体",
+                    listOf(
+                        PieChartDataEntry("正解", percentageCorrect, GreenCorrectAnswer),
+                        PieChartDataEntry("不正解", percentageIncorrect, RedIncorrectAnswer)
                     )
+                )
+
+                val categoryIds = questionList.distinctBy { question ->
+                    question.categoryId
+                }.map { question ->
+                    question.categoryId
+                }
+
+                val categoryList = categoryTableHelper.getCategories(deckId).filter { category ->
+                    categoryIds.contains(category.categoryId)
+                }
+
+                val mapTotal = mutableMapOf<String, Float>()
+                val mapNormed = mutableMapOf<String, Float>()
+
+                questionList.groupBy { question ->
+                    question.categoryId
+                }.forEach { categoryId, questions ->
+                    var sum = 0
+                    var total = 0
+
+                    questions.forEach {
+                        answers.filter { answer ->
+                            answer.questionId == it.questionId
+                        }.forEach { answer ->
+                            if (answer.isCorrect) {
+                                sum++
+                            }
+
+                            total++
+                        }
+                    }
+
+                    val categoryName = categoryList.first { category ->
+                        category.categoryId == categoryId
+                    }.name
+
+                    if (total > 0) {
+                        mapTotal.put(categoryName, sum.toFloat())
+                        mapNormed.put(categoryName, (sum.toFloat() / total) )
+                    }
+                }
+
+                analysisDeckUiState = AnalysisDeckUiState.Success(
+                    pieChartData = pieChartData,
+                    barChartDataTotal = mapTotal,
+                    barChartDataNormed = mapNormed
                 )
             }
         }

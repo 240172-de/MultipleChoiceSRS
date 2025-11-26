@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.mpandroidchart)
     implementation(libs.androidx.runtime)
+    implementation(libs.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
