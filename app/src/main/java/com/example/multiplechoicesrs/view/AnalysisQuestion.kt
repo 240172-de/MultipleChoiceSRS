@@ -34,6 +34,7 @@ import com.example.multiplechoicesrs.model.viewmodel.AnalysisQuestionData
 import com.example.multiplechoicesrs.model.viewmodel.AnalysisQuestionUiState
 import com.example.multiplechoicesrs.model.viewmodel.AnalysisQuestionViewModel
 import com.example.multiplechoicesrs.view.custom.ExpandableView
+import com.example.multiplechoicesrs.view.custom.charts.BarChart
 import com.example.multiplechoicesrs.view.custom.charts.PieChart
 import com.example.multiplechoicesrs.view.dialog.FilterCategoriesDialog
 import com.example.multiplechoicesrs.view.dialog.ShowQuestionDialog
@@ -169,6 +170,12 @@ fun AnalysisQuestionItem(
             }
 
             PieChart(data.pieChartData)
+
+            BarChart(
+                title = "Answers given",
+                data = data.barChartData,
+                rotateXAxisLabel = false
+            )
         }
     }
 }

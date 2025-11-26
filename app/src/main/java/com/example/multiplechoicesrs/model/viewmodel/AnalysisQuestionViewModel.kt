@@ -19,7 +19,8 @@ import kotlinx.coroutines.launch
 
 data class AnalysisQuestionData(
     val question: Question,
-    val pieChartData: PieChartData
+    val pieChartData: PieChartData,
+    val barChartData: Map<String, Float>
 )
 
 sealed interface AnalysisQuestionUiState {
@@ -63,14 +64,25 @@ class AnalysisQuestionViewModel(
                     val percentageCorrect = numCorrect.toFloat() / numTotal
                     val percentageIncorrect = numIncorrect.toFloat() / numTotal
 
+                    val numA = answers.count { it.answerGiven == 1 }
+                    val numB = answers.count { it.answerGiven == 2 }
+                    val numC = answers.count { it.answerGiven == 3 }
+                    val numD = answers.count { it.answerGiven == 4 }
+
                     data.add(AnalysisQuestionData(
-                        question,
-                        PieChartData(
+                        question = question,
+                        pieChartData = PieChartData(
                             "正解率",
                             listOf(
                                 PieChartDataEntry("正解", percentageCorrect, GreenCorrectAnswer),
                                 PieChartDataEntry("不正解", percentageIncorrect, RedIncorrectAnswer)
                             )
+                        ),
+                        barChartData = mapOf(
+                            "ア" to numA.toFloat(),
+                            "イ" to numB.toFloat(),
+                            "ウ" to numC.toFloat(),
+                            "エ" to numD.toFloat()
                         )
                     ))
                 }

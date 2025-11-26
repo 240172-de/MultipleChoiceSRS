@@ -36,17 +36,25 @@ fun BarChart(
     title: String,
     data: Map<String, Float>,
     dataLabelFormatter: CartesianValueFormatter = CartesianValueFormatter.Default,
+    rotateXAxisLabel: Boolean = true
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            title,
-            fontWeight = FontWeight.Bold
-        )
+        if (title.isNotEmpty()) {
+            Text(
+                title,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
-        ColumnChart(data, dataLabelFormatter, Modifier.sizeIn(minHeight = 360.dp))
+        ColumnChart(
+            data = data,
+            dataLabelFormatter = dataLabelFormatter,
+            rotateXAxisLabel = rotateXAxisLabel,
+            modifier = Modifier.sizeIn(minHeight = 360.dp)
+        )
     }
 }
 
@@ -59,6 +67,7 @@ val labelListKey = ExtraStore.Key<List<String>>()
 private fun ColumnChart(
     modelProducer: CartesianChartModelProducer,
     dataLabelFormatter: CartesianValueFormatter,
+    rotateXAxisLabel: Boolean,
     modifier: Modifier = Modifier,
 ) {
     CartesianChartHost(
@@ -80,8 +89,8 @@ private fun ColumnChart(
                     valueFormatter = dataLabelFormatter
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(
-                    size = BaseAxis.Size.Auto(minDp = 120f),
-                    labelRotationDegrees = -65f,
+                    size = BaseAxis.Size.Auto(minDp = if (rotateXAxisLabel) 120f else 10f),
+                    labelRotationDegrees = if (rotateXAxisLabel) -65f else 0f,
                     label = TextComponent(
                         lineCount = 2,
                         truncateAt = TextUtils.TruncateAt.MIDDLE
@@ -101,6 +110,7 @@ private fun ColumnChart(
 private fun ColumnChart(
     data: Map<String, Float>,
     dataLabelFormatter: CartesianValueFormatter,
+    rotateXAxisLabel: Boolean,
     modifier: Modifier = Modifier
 ) {
     val modelProducer = remember { CartesianChartModelProducer() }
@@ -112,5 +122,10 @@ private fun ColumnChart(
             extras { it[labelListKey] = data.keys.toList() }
         }
     }
-    ColumnChart(modelProducer, dataLabelFormatter, modifier)
+    ColumnChart(
+        modelProducer = modelProducer,
+        dataLabelFormatter = dataLabelFormatter,
+        rotateXAxisLabel = rotateXAxisLabel,
+        modifier = modifier
+    )
 }
