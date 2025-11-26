@@ -85,10 +85,10 @@ fun AnalysisQuestionList(
     if (showFilterCategoryDialog) {
         FilterCategoriesDialog(
             allCategories = categoryList,
+            preselectIds = filterCategoryId.toList(),
             onSubmit = {
-                //TODO: Better handling
+                filterCategoryId.clear()
                 filterCategoryId.addAll(it)
-                filterCategoryId.retainAll(it)
                 showFilterCategoryDialog = false
             },
             onDismissRequest = {

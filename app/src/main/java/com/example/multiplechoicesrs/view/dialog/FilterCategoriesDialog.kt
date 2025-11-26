@@ -23,12 +23,12 @@ import com.example.multiplechoicesrs.view.custom.getCheckedIds
 @Composable
 fun FilterCategoriesDialog(
     allCategories: List<Category>,
-//    selectedIds: List<Int>,
+    preselectIds: List<Int>,
     onSubmit: (categoryIds: List<Int>) -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    val list = remember { makeList(allCategories) }
-    //TODO: Preselect if prior selection
+    val list = remember { makeList(allCategories, preselectIds) }
+
     Dialog(onDismissRequest) {
         Card(
             modifier = Modifier.padding(16.dp),
@@ -69,12 +69,12 @@ fun FilterCategoriesDialog(
     }
 }
 
-private fun makeList(categories: List<Category>): List<CheckableItem> {
+private fun makeList(categories: List<Category>, preselectIds: List<Int>): List<CheckableItem> {
     return categories.map {
         CheckableItem(
-            it.categoryId,
-            it.name,
-            false
+            id = it.categoryId,
+            label = it.name,
+            initialIsChecked = preselectIds.contains(it.categoryId)
         )
     }
 }
