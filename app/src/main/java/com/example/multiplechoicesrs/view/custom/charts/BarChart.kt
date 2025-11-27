@@ -3,6 +3,7 @@ package com.example.multiplechoicesrs.view.custom.charts
 import android.text.TextUtils
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.example.multiplechoicesrs.ext.modifyIf
 import com.example.multiplechoicesrs.model.BarChartData
 import com.example.multiplechoicesrs.model.BarChartDataSettings
 import com.example.multiplechoicesrs.model.BarChartLabelFormat
@@ -143,7 +146,6 @@ private fun ColumnChart(
                     valueFormatter = settings.labelFormat.labelFormatter
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(
-                    size = BaseAxis.Size.Auto(minDp = if (settings.rotateXAxisLabel) 120f else 10f),
                     labelRotationDegrees = if (settings.rotateXAxisLabel) -65f else 0f,
                     label = TextComponent(
                         lineCount = 2,
@@ -156,6 +158,8 @@ private fun ColumnChart(
                 ),
             ),
         modelProducer = modelProducer,
-        modifier = modifier,
+        modifier = modifier.modifyIf(settings.rotateXAxisLabel) {
+            heightIn(min = 340.dp)
+        },
     )
 }

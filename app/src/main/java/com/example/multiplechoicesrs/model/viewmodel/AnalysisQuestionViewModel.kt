@@ -85,7 +85,7 @@ class AnalysisQuestionViewModel(
                             )
                         ),
                         barChartData = BarChartData(
-                            title = "Answers given",
+                            title = "答え",
                             settings = BarChartDataSettings(
                                 rotateXAxisLabel = false,
                                 labelFormat = BarChartLabelFormat.DEFAULT
