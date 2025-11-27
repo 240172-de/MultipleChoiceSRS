@@ -10,6 +10,11 @@ import com.example.multiplechoicesrs.db.AnswerTableHelper
 import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
 import com.example.multiplechoicesrs.model.Answer
+import com.example.multiplechoicesrs.model.BarChartData
+import com.example.multiplechoicesrs.model.BarChartDataEntry
+import com.example.multiplechoicesrs.model.BarChartDataSeries
+import com.example.multiplechoicesrs.model.BarChartDataSettings
+import com.example.multiplechoicesrs.model.BarChartLabelFormat
 import com.example.multiplechoicesrs.model.PieChartData
 import com.example.multiplechoicesrs.model.PieChartDataEntry
 import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
@@ -19,8 +24,8 @@ import kotlinx.coroutines.launch
 sealed interface AnalysisDeckUiState {
     data class Success(
         val pieChartData: PieChartData,
-        val barChartDataTotal: Map<String, Float>,
-        val barChartDataNormed: Map<String, Float>
+        val barChartDataTotal: BarChartData,
+        val barChartDataNormed: BarChartData
     ): AnalysisDeckUiState
     object Loading: AnalysisDeckUiState
     object NoData: AnalysisDeckUiState
@@ -79,8 +84,10 @@ class AnalysisDeckViewModel(
                     categoryIds.contains(category.categoryId)
                 }
 
-                val mapTotal = mutableMapOf<String, Float>()
-                val mapNormed = mutableMapOf<String, Float>()
+                val labelList = mutableListOf<String>()
+                val entriesCorrect = mutableListOf<BarChartDataEntry>()
+                val entriesIncorrect = mutableListOf<BarChartDataEntry>()
+                val entriesNormed = mutableListOf<BarChartDataEntry>()
 
                 questionList.groupBy { question ->
                     question.categoryId
@@ -105,15 +112,52 @@ class AnalysisDeckViewModel(
                     }.name
 
                     if (total > 0) {
-                        mapTotal.put(categoryName, sum.toFloat())
-                        mapNormed.put(categoryName, (sum.toFloat() / total) )
+                        labelList.add(categoryName)
+
+                        entriesCorrect.add(BarChartDataEntry(
+                            value = sum.toFloat(),
+                            color = GreenCorrectAnswer
+                        ))
+
+                        entriesIncorrect.add(BarChartDataEntry(
+                            value = (total - sum).toFloat(),
+                            color = RedIncorrectAnswer
+                        ))
+
+                        entriesNormed.add(BarChartDataEntry(
+                            value = sum.toFloat() / total,
+                            color = GreenCorrectAnswer
+                        ))
                     }
                 }
 
+                val dataTotal = BarChartData(
+                    title = "正解数",
+                    settings = BarChartDataSettings(
+                        rotateXAxisLabel = true,
+                        labelFormat = BarChartLabelFormat.DEFAULT
+                    ),
+                    seriesList = listOf(
+                        BarChartDataSeries(entriesCorrect),
+                        BarChartDataSeries(entriesIncorrect)
+                    ),
+                    labelList = labelList
+                )
+
+                val dataNormed = BarChartData(
+                    title = "正解率",
+                    settings = BarChartDataSettings(
+                        rotateXAxisLabel = true,
+                        labelFormat = BarChartLabelFormat.PERCENTAGE
+                    ),
+                    seriesList = listOf(BarChartDataSeries(entriesNormed)),
+                    labelList = labelList
+                )
+
                 analysisDeckUiState = AnalysisDeckUiState.Success(
                     pieChartData = pieChartData,
-                    barChartDataTotal = mapTotal,
-                    barChartDataNormed = mapNormed
+                    barChartDataTotal = dataTotal,
+                    barChartDataNormed = dataNormed
                 )
             }
         }

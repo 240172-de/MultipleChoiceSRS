@@ -4,11 +4,17 @@ import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.multiplechoicesrs.db.AnswerTableHelper
 import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
+import com.example.multiplechoicesrs.model.BarChartData
+import com.example.multiplechoicesrs.model.BarChartDataEntry
+import com.example.multiplechoicesrs.model.BarChartDataSeries
+import com.example.multiplechoicesrs.model.BarChartDataSettings
+import com.example.multiplechoicesrs.model.BarChartLabelFormat
 import com.example.multiplechoicesrs.model.Category
 import com.example.multiplechoicesrs.model.PieChartData
 import com.example.multiplechoicesrs.model.PieChartDataEntry
@@ -20,7 +26,7 @@ import kotlinx.coroutines.launch
 data class AnalysisQuestionData(
     val question: Question,
     val pieChartData: PieChartData,
-    val barChartData: Map<String, Float>
+    val barChartData: BarChartData
 )
 
 sealed interface AnalysisQuestionUiState {
@@ -78,11 +84,31 @@ class AnalysisQuestionViewModel(
                                 PieChartDataEntry("不正解", percentageIncorrect, RedIncorrectAnswer)
                             )
                         ),
-                        barChartData = mapOf(
-                            "ア" to numA.toFloat(),
-                            "イ" to numB.toFloat(),
-                            "ウ" to numC.toFloat(),
-                            "エ" to numD.toFloat()
+                        barChartData = BarChartData(
+                            title = "Answers given",
+                            settings = BarChartDataSettings(
+                                rotateXAxisLabel = false,
+                                labelFormat = BarChartLabelFormat.DEFAULT
+                            ),
+                            seriesList = listOf(BarChartDataSeries(listOf(
+                                BarChartDataEntry(
+                                    value = numA.toFloat(),
+                                    color = getColor(1, question.correctAnswer)
+                                ),
+                                BarChartDataEntry(
+                                    value = numB.toFloat(),
+                                    color = getColor(2, question.correctAnswer)
+                                ),
+                                BarChartDataEntry(
+                                    value = numC.toFloat(),
+                                    color = getColor(3, question.correctAnswer)
+                                ),
+                                BarChartDataEntry(
+                                    value = numD.toFloat(),
+                                    color = getColor(4, question.correctAnswer)
+                                ),
+                            ))),
+                            labelList = listOf("ア", "イ", "ウ", "エ")
                         )
                     ))
                 }
@@ -105,4 +131,8 @@ class AnalysisQuestionViewModel(
             }
         }
     }
+}
+
+private fun getColor(answerGiven: Int, correctAnswer: Int): Color {
+    return if (answerGiven == correctAnswer) GreenCorrectAnswer else RedIncorrectAnswer
 }

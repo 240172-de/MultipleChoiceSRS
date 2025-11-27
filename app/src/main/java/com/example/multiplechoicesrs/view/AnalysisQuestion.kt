@@ -171,11 +171,7 @@ fun AnalysisQuestionItem(
 
             PieChart(data.pieChartData)
 
-            BarChart(
-                title = "Answers given",
-                data = data.barChartData,
-                rotateXAxisLabel = false
-            )
+            BarChart(data.barChartData)
         }
     }
 }
