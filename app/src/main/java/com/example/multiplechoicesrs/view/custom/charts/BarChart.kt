@@ -58,6 +58,38 @@ fun BarChart(
 
 @Composable
 private fun ColumnChart(
+    data: BarChartData,
+    modifier: Modifier = Modifier
+) {
+    val modelProducer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(Unit) {
+        modelProducer.runTransaction {
+            columnSeries {
+                data.seriesList.forEach {
+                    series(it.entries.map { entry ->
+                        entry.value
+                    })
+                }
+            }
+            extras { it[labelListKey] = data.labelList }
+            extras { it[colorListKey] =
+                data.seriesList.map { series ->
+                    series.entries.map { entry ->
+                        entry.color }
+                }
+            }
+        }
+    }
+
+    ColumnChart(
+        modelProducer = modelProducer,
+        settings = data.settings,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ColumnChart(
     modelProducer: CartesianChartModelProducer,
     settings: BarChartDataSettings,
     modifier: Modifier = Modifier,
@@ -113,36 +145,5 @@ private fun ColumnChart(
             ),
         modelProducer = modelProducer,
         modifier = modifier,
-    )
-}
-
-@Composable
-private fun ColumnChart(
-    data: BarChartData,
-    modifier: Modifier = Modifier
-) {
-    val modelProducer = remember { CartesianChartModelProducer() }
-    LaunchedEffect(Unit) {
-        modelProducer.runTransaction {
-            columnSeries {
-                data.seriesList.forEach {
-                    series(it.entries.map { entry ->
-                        entry.value
-                    })
-                }
-            }
-            extras { it[labelListKey] = data.labelList }
-            extras { it[colorListKey] =
-                data.seriesList.map { series ->
-                    series.entries.map { entry ->
-                        entry.color }
-                }
-            }
-        }
-    }
-    ColumnChart(
-        modelProducer = modelProducer,
-        settings = data.settings,
-        modifier = modifier
     )
 }
