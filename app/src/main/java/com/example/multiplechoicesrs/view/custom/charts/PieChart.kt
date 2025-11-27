@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,9 @@ fun PieChart(data: PieChartData) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
+        val foregroundColor = MaterialTheme.colorScheme.onBackground.toArgb()
+
         Crossfade(targetState = data) { pieChartData ->
             AndroidView(
                 factory = { context ->
@@ -45,9 +49,11 @@ fun PieChart(data: PieChartData) {
                         centerText = pieChartData.centerText
                         setCenterTextSize(22f)
                         setCenterTextTypeface(Typeface.DEFAULT_BOLD)
+                        setCenterTextColor(foregroundColor)
 
                         description.isEnabled = false
                         isDrawHoleEnabled = true
+                        setHoleColor(backgroundColor)
 
                         setEntryLabelTextSize(16f)
                         setUsePercentValues(true)
@@ -57,6 +63,7 @@ fun PieChart(data: PieChartData) {
                         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
                         legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
                         legend.orientation = Legend.LegendOrientation.VERTICAL
+                        legend.textColor = foregroundColor
                     }
                 },
                 modifier = Modifier
