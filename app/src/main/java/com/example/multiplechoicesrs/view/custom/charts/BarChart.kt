@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import com.example.multiplechoicesrs.model.BarChartData
 import com.example.multiplechoicesrs.model.BarChartDataSettings
+import com.example.multiplechoicesrs.model.BarChartLabelFormat
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
@@ -23,6 +24,7 @@ import com.patrykandpatrick.vico.core.cartesian.axis.BaseAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianLayerRangeProvider
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.ColumnCartesianLayerModel
 import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
@@ -52,9 +54,6 @@ fun BarChart(
         ColumnChart(data)
     }
 }
-
-//TODO: RangeProvider wenn mit Prozent
-//https://github.com/patrykandpatrick/vico/blob/bb10a34/sample/src/main/java/com/patrykandpatrick/vico/sample/showcase/charts/TemperatureAnomalies.kt#L58-L67
 
 @Composable
 private fun ColumnChart(
@@ -124,6 +123,19 @@ private fun ColumnChart(
                                 fill = fill(color),
                                 thicknessDp = 10f
                             )
+                        }
+                    },
+                    rangeProvider = object : CartesianLayerRangeProvider {
+                        override fun getMaxY(
+                            minY: Double,
+                            maxY: Double,
+                            extraStore: ExtraStore
+                        ): Double {
+                            if (settings.labelFormat == BarChartLabelFormat.PERCENTAGE) {
+                                return 1.0
+                            }
+
+                            return super.getMaxY(minY, maxY, extraStore)
                         }
                     }
                 ),
