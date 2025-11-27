@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.multiplechoicesrs.R
+import com.example.multiplechoicesrs.ui.theme.DarkBlue
 import com.example.multiplechoicesrs.ui.theme.LightBlue
 
 @Composable
@@ -60,7 +60,7 @@ fun ExpandableBottomView(
                 Icon(
                     painter = painterResource(R.drawable.baseline_keyboard_arrow_down_24),
                     contentDescription = "Expand",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = DarkBlue,
                     modifier = Modifier
                         .rotate(degree)
                         .size(32.dp)
