@@ -110,10 +110,8 @@ fun DeleteDeckList(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(deckList) { deck ->
-            //TODO: fillMaxSize fur alle LazyColumns
             //TODO: Laden per ViewModel an mehreren Stellen im Code
             //TODO: Wenn keine Fragen nach klick auf Study ewiger Ladendialog
-            //TODO: Beim Laden auch die gespeicherten Results etc. loschen
             DeleteDeckItem(deck, onClickDelete)
         }
     }

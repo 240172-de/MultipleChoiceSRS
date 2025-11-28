@@ -130,7 +130,9 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
         }
     ) {
         LazyColumn(
-            modifier = modifier.padding(10.dp),
+            modifier = modifier
+                .fillMaxSize()
+                .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(decks.data) { deck ->
