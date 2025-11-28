@@ -114,7 +114,6 @@ class StudyHelper(context: Context) {
 
         val numCorrect = if (isNewStatusReview) 1 else 0
 
-        questionResult.numCorrect += numCorrect
         questionResult.dateDue = getDateDue(newBox)
         questionResult.status = if (isNewStatusReview) QuestionStatus.REVIEW else QuestionStatus.RELEARN
         questionResult.box = newBox

@@ -14,7 +14,6 @@ class QuestionResultTableHelper(context: Context) {
         dbHelper.writableDatabase.use {  db ->
             val values = ContentValues().apply {
                 put(DBHelper.QUESTION_ID, questionResult.questionId)
-                put(DBHelper.NUM_CORRECT, questionResult.numCorrect)
                 put(DBHelper.DATE_DUE, questionResult.dateDue)
                 put(DBHelper.STATUS, questionResult.status.ordinal)
                 put(DBHelper.BOX, questionResult.box)
@@ -47,7 +46,6 @@ class QuestionResultTableHelper(context: Context) {
                 while (it.moveToFirst()) {
                     return QuestionResult(
                         it.getInt(it.getColumnIndex(DBHelper.QUESTION_ID)),
-                        it.getInt(it.getColumnIndex(DBHelper.NUM_CORRECT)),
                         it.getString(it.getColumnIndex(DBHelper.DATE_DUE)),
                         QuestionStatus.get(it.getInt(it.getColumnIndex(DBHelper.STATUS))),
                         it.getInt(it.getColumnIndex(DBHelper.BOX)),

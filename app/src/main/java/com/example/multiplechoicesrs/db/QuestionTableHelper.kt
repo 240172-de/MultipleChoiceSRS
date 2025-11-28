@@ -56,7 +56,6 @@ class QuestionTableHelper(context: Context) {
                 while (it.moveToNext()) {
                     val result = QuestionResult(
                         it.getInt(it.getColumnIndex(DBHelper.QUESTION_ID)),
-                        it.getInt(it.getColumnIndex(DBHelper.NUM_CORRECT)),
                         it.getString(it.getColumnIndex(DBHelper.DATE_DUE)),
                         QuestionStatus.get(it.getInt(it.getColumnIndex(DBHelper.STATUS))),
                         it.getInt(it.getColumnIndex(DBHelper.BOX)),
@@ -141,18 +140,6 @@ class QuestionTableHelper(context: Context) {
                 null,
                 valuesQuestionResult,
                 SQLiteDatabase.CONFLICT_IGNORE
-            )
-        }
-    }
-
-    fun deleteQuestion(questionId: Int) {
-        dbHelper.writableDatabase.use { db ->
-            val params = arrayOf(questionId.toString())
-
-            db.delete(
-                DBHelper.TABLE_QUESTION,
-                "${DBHelper.QUESTION_ID} = ?",
-                params
             )
         }
     }

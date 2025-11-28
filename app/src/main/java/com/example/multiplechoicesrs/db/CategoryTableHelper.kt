@@ -57,22 +57,4 @@ class CategoryTableHelper(context: Context) {
             )
         }
     }
-
-    fun deleteCategory(categoryId: Int) {
-        dbHelper.writableDatabase.use { db ->
-            val params = arrayOf(categoryId.toString())
-
-            db.delete(
-                DBHelper.TABLE_CATEGORY,
-                "${DBHelper.CATEGORY_ID} = ?",
-                params
-            )
-
-            db.delete(
-                DBHelper.TABLE_QUESTION,
-                "${DBHelper.CATEGORY_ID} = ?",
-                params
-            )
-        }
-    }
 }

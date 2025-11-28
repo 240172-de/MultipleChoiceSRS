@@ -33,7 +33,7 @@ fun DeleteDeckDialog(
                     .padding(horizontal = 20.dp)
                     .padding(top = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start
             ) {
                 Text("${deck.name}を削除しますか？")
 
