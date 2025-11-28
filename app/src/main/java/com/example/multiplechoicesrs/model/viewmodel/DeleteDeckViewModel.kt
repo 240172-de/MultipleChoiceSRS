@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.multiplechoicesrs.db.DeckTableHelper
-import com.example.multiplechoicesrs.db.QuestionTableHelper
 import com.example.multiplechoicesrs.model.Deck
 import kotlinx.coroutines.launch
 

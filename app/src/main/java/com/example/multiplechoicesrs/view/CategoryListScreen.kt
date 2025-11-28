@@ -73,7 +73,6 @@ fun CategoryListScreen(
         CheckableList(
             data = list,
             onCheckedChange = {
-                Log.d("TEST", "${list.size}    ${getCheckedIds(list)}")
                 isButtonEnabled = getCheckedIds(list).isNotEmpty()
             },
             modifier = Modifier.weight(1f)

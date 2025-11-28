@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.ext.modifyIf
 import com.example.multiplechoicesrs.logic.StudyHelper
@@ -43,12 +44,13 @@ import com.example.multiplechoicesrs.model.Answer
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.model.Question
 import com.example.multiplechoicesrs.model.StudySession
+import com.example.multiplechoicesrs.model.viewmodel.StudyUiState
+import com.example.multiplechoicesrs.model.viewmodel.StudyViewModel
 import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 import com.example.multiplechoicesrs.view.custom.ExpandableBottomView
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
-import com.example.multiplechoicesrs.view.dialog.LoadingSpinnerDialog
 import com.example.multiplechoicesrs.view.dialog.ResultDialog
 
 @Composable
@@ -59,7 +61,12 @@ fun StudyScreenLoad(
     navToDeckList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val studyHelper = StudyHelper(LocalContext.current)
+    val context = LocalContext.current
+    val studyViewModel: StudyViewModel = viewModel {
+        StudyViewModel(context, deck.deckId, categoryIdList, numToStudy)
+    }
+
+    val studyHelper = StudyHelper(context)
     val answerList = remember { emptyList<Answer>().toMutableStateList() }
     var result: StudySession? by remember { mutableStateOf(null)  }
 
@@ -80,9 +87,6 @@ fun StudyScreenLoad(
         }
     }
 
-    var questionList by remember { mutableStateOf(emptyList<Question>()) }
-    questionList = studyHelper.getQuestions(deck.deckId, categoryIdList, numToStudy)
-
     if (result != null) {
         val onDismiss = {
             result = null
@@ -101,18 +105,29 @@ fun StudyScreenLoad(
         }
     }
 
-    if (questionList.isEmpty()) {
-        LoadingSpinnerDialog()
-    } else {
-        Column(modifier) {
-            StudyScreen(questionList,
-                onSubmitAnswer =  { answer ->
-                    answerList.add(answer)
-                },
-                onFinish = {
-                    result = studyHelper.onFinishStudySession(answerList)
-                })
-        }
+    Column(modifier) {
+        StudyRouting(
+            studyUiState = studyViewModel.studyUiState,
+            onSubmitAnswer =  { answer ->
+                answerList.add(answer)
+            },
+            onFinish = {
+                result = studyHelper.onFinishStudySession(answerList)
+            }
+        )
+    }
+}
+
+@Composable
+fun StudyRouting(
+    studyUiState: StudyUiState,
+    onSubmitAnswer: (Answer) -> Unit,
+    onFinish: () -> Unit
+) {
+    when(studyUiState) {
+        is StudyUiState.Loading -> LoadingScreen()
+        is StudyUiState.NoData -> NoDataScreen()
+        is StudyUiState.Success -> StudyScreen(studyUiState.questionList, onSubmitAnswer, onFinish)
     }
 }
 
@@ -175,6 +190,7 @@ fun StudyScreen(
     }
 }
 
+//TODO: Image as answer
 @Composable
 fun AnswerBottomSheet(
     question: Question,
