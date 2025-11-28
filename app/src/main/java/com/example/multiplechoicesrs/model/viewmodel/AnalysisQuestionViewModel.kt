@@ -42,9 +42,9 @@ class AnalysisQuestionViewModel(
     context: Context,
     private val deckId: Int
 ): ViewModel() {
-    val categoryTableHelper = CategoryTableHelper(context)
-    val questionTableHelper = QuestionTableHelper(context)
-    val answerTableHelper = AnswerTableHelper(context)
+    private val categoryTableHelper = CategoryTableHelper(context)
+    private val questionTableHelper = QuestionTableHelper(context)
+    private val answerTableHelper = AnswerTableHelper(context)
     var analysisQuestionUiState: AnalysisQuestionUiState by mutableStateOf(AnalysisQuestionUiState.Loading)
         private set
 

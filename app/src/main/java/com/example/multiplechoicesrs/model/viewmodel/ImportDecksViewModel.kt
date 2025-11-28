@@ -12,12 +12,12 @@ import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface ImportDecksUiState {
-    data class Success(val decks: DecksJson) : ImportDecksUiState
-    object Error : ImportDecksUiState
-    object Loading : ImportDecksUiState
+    data class Success(val decks: DecksJson): ImportDecksUiState
+    object Error: ImportDecksUiState
+    object Loading: ImportDecksUiState
 }
 
-class ImportDecksViewModel : ViewModel() {
+class ImportDecksViewModel: ViewModel() {
     var importDecksUiState: ImportDecksUiState by mutableStateOf(ImportDecksUiState.Loading)
         private set
 

@@ -18,6 +18,7 @@ import com.example.multiplechoicesrs.view.AnalysisScreen
 import com.example.multiplechoicesrs.view.CategoryListScreen
 import com.example.multiplechoicesrs.view.custom.ContentAwareTopAppBar
 import com.example.multiplechoicesrs.view.DeckListScreen
+import com.example.multiplechoicesrs.view.DeleteScreen
 import com.example.multiplechoicesrs.view.ImportDataScreen
 import com.example.multiplechoicesrs.view.StudyScreenLoad
 import kotlin.reflect.typeOf
@@ -52,8 +53,20 @@ fun App() {
                 )
             }
 
+            composable<Screen.DeleteScreen> {
+                DeleteScreen(
+                    navBack = navController::popBackStack,
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                )
+            }
+
             composable<Screen.DeckListScreen> {
                 DeckListScreen(
+                    navToDelete = {
+                        navController.navigate(Screen.DeleteScreen)
+                    },
                     navToImport = {
                         navController.navigate(Screen.ImportDataScreen)
                     },

@@ -25,6 +25,7 @@ import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
 @Composable
 fun DeckListScreen(
     navToImport: () -> Unit,
+    navToDelete: () -> Unit,
     navToCategoryList: (deck: Deck) -> Unit,
     navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit,
     navToAnalysis: (deck: Deck) -> Unit,
@@ -43,6 +44,18 @@ fun DeckListScreen(
             Icon(
                 painter = painterResource(R.drawable.baseline_download_24),
                 contentDescription = "インポート"
+            )
+        }
+
+        IconButton(
+            onClick = {
+                navToDelete()
+            },
+            modifier = Modifier.padding(start = 10.dp)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.baseline_delete_24),
+                contentDescription = "削除"
             )
         }
     }

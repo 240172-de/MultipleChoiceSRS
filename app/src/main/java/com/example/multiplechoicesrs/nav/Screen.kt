@@ -8,6 +8,9 @@ sealed class Screen {
     data object ImportDataScreen
 
     @Serializable
+    data object DeleteScreen
+
+    @Serializable
     data object DeckListScreen
 
     @Serializable

@@ -65,18 +65,6 @@ class DeckTableHelper(context: Context) {
                 "${DBHelper.DECK_ID} = ?",
                 params
             )
-
-            db.delete(
-                DBHelper.TABLE_CATEGORY,
-                "${DBHelper.DECK_ID} = ?",
-                params
-            )
-
-            db.delete(
-                DBHelper.TABLE_QUESTION,
-                "${DBHelper.DECK_ID} = ?",
-                params
-            )
         }
     }
 }

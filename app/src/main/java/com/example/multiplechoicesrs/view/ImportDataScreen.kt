@@ -198,9 +198,6 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
     }
 }
 
-/**
- * The home screen displaying error message with re-attempt button.
- */
 @Composable
 fun ErrorScreen(modifier: Modifier = Modifier) {
     Column(
