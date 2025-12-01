@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
@@ -43,6 +44,8 @@ fun SortDialog(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.Start
             ) {
+                Text("順番", fontWeight = FontWeight.Bold)
+
                 Column(
                     Modifier
                         .selectableGroup()
@@ -119,5 +122,13 @@ enum class SortBy(
     NUM_WRONG_DESC(
         label = "誤答数（降順）",
         ascending = false
+    ),
+    RATIO_CORRECT_ASC(
+        label = "正解率（昇順）",
+        ascending = true
+    ),
+    RATIO_CORRECT_DESC(
+        label = "正解率（降順）",
+        ascending = true
     )
 }

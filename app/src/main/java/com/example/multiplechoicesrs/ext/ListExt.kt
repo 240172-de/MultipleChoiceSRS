@@ -1,6 +1,7 @@
 package com.example.multiplechoicesrs.ext
 
 import com.example.multiplechoicesrs.logic.AnalysisQuestionNumWrongComparator
+import com.example.multiplechoicesrs.logic.AnalysisQuestionRatioCorrectComparator
 import com.example.multiplechoicesrs.logic.AnalysisQuestionSourceComparator
 import com.example.multiplechoicesrs.model.Question
 import com.example.multiplechoicesrs.model.QuestionStatus
@@ -37,6 +38,7 @@ fun List<AnalysisQuestionData>.sort(by: SortBy): List<AnalysisQuestionData> {
     val comparator = when(by) {
         SortBy.ALPHABETICALLY_ASC, SortBy.ALPHABETICALLY_DESC -> AnalysisQuestionSourceComparator
         SortBy.NUM_WRONG_ASC, SortBy.NUM_WRONG_DESC -> AnalysisQuestionNumWrongComparator
+        SortBy.RATIO_CORRECT_ASC, SortBy.RATIO_CORRECT_DESC -> AnalysisQuestionRatioCorrectComparator
     }
 
     val sorted = this.sortedWith { o1, o2 ->

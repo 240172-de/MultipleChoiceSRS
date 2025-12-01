@@ -65,3 +65,9 @@ object AnalysisQuestionNumWrongComparator: Comparator<AnalysisQuestionData> {
         return data1.numIncorrect.compareTo(data2.numIncorrect)
     }
 }
+
+object AnalysisQuestionRatioCorrectComparator: Comparator<AnalysisQuestionData> {
+    override fun compare(data1: AnalysisQuestionData, data2: AnalysisQuestionData): Int {
+        return data1.ratioCorrect.compareTo(data2.ratioCorrect)
+    }
+}

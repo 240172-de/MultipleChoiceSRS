@@ -27,7 +27,8 @@ data class AnalysisQuestionData(
     val question: Question,
     val pieChartData: PieChartData,
     val barChartData: BarChartData,
-    val numIncorrect: Int
+    val numIncorrect: Int,
+    val ratioCorrect: Float
 )
 
 sealed interface AnalysisQuestionUiState {
@@ -111,7 +112,8 @@ class AnalysisQuestionViewModel(
                             ))),
                             labelList = listOf("ア", "イ", "ウ", "エ")
                         ),
-                        numIncorrect = numIncorrect
+                        numIncorrect = numIncorrect,
+                        ratioCorrect = percentageCorrect
                     ))
                 }
             }
