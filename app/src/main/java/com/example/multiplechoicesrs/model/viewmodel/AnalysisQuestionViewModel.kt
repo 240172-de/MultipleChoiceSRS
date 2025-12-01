@@ -26,7 +26,8 @@ import kotlinx.coroutines.launch
 data class AnalysisQuestionData(
     val question: Question,
     val pieChartData: PieChartData,
-    val barChartData: BarChartData
+    val barChartData: BarChartData,
+    val numIncorrect: Int
 )
 
 sealed interface AnalysisQuestionUiState {
@@ -109,7 +110,8 @@ class AnalysisQuestionViewModel(
                                 ),
                             ))),
                             labelList = listOf("ア", "イ", "ウ", "エ")
-                        )
+                        ),
+                        numIncorrect = numIncorrect
                     ))
                 }
             }

@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.multiplechoicesrs.R
+import com.example.multiplechoicesrs.ext.sort
 import com.example.multiplechoicesrs.model.Category
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.model.Question
@@ -39,6 +40,8 @@ import com.example.multiplechoicesrs.view.custom.charts.BarChart
 import com.example.multiplechoicesrs.view.custom.charts.PieChart
 import com.example.multiplechoicesrs.view.dialog.FilterCategoriesDialog
 import com.example.multiplechoicesrs.view.dialog.ShowQuestionDialog
+import com.example.multiplechoicesrs.view.dialog.SortBy
+import com.example.multiplechoicesrs.view.dialog.SortDialog
 
 @Composable
 fun AnalysisQuestion(deck: Deck) {
@@ -78,6 +81,9 @@ fun AnalysisQuestionList(
     var selectedQuestion: Question? by remember { mutableStateOf(null) }
     var showQuestionDialog by remember { mutableStateOf(false) }
 
+    var sortBy by remember { mutableStateOf(SortBy.ALPHABETICALLY_ASC) }
+    var showSortDialog by remember { mutableStateOf(false) }
+
     if (showQuestionDialog && selectedQuestion != null) {
         ShowQuestionDialog(selectedQuestion!!) {
             showQuestionDialog = false
@@ -95,6 +101,19 @@ fun AnalysisQuestionList(
             },
             onDismissRequest = {
                 showFilterCategoryDialog = false
+            }
+        )
+    }
+
+    if (showSortDialog) {
+        SortDialog(
+            initSortBy = sortBy,
+            onSubmit = {
+                sortBy = it
+                showSortDialog = false
+            },
+            onDismissRequest = {
+                showSortDialog = false
             }
         )
     }
@@ -117,6 +136,23 @@ fun AnalysisQuestionList(
                 },
                 modifier = Modifier.weight(1f)
             )
+
+            OutlinedButton(
+                onClick = {
+                    showSortDialog = true
+                },
+                modifier = Modifier.size(46.dp),
+                contentPadding = PaddingValues(0.dp),
+                shape = RoundedCornerShape(15)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.baseline_sort_by_alpha_24),
+                    contentDescription = "ソート",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .size(36.dp)
+                )
+            }
 
             OutlinedButton(
                 onClick = {
@@ -145,7 +181,7 @@ fun AnalysisQuestionList(
                         (filterCategoryId.isEmpty() ||
                                 filterCategoryId.contains(item.question.categoryId)
                                 )
-            }) { item ->
+            }.sort(sortBy)) { item ->
                 AnalysisQuestionItem(item) {
                     selectedQuestion = item.question
                     showQuestionDialog = true
