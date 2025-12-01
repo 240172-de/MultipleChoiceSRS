@@ -50,8 +50,7 @@ fun SelectNumToStudyDialog(
                 Text(deck.name, fontWeight = FontWeight.Bold)
 
                 if (!studyHelper.hasDueCards(deck.deckId, categoryIdList)) {
-                    //TODO: Japanese
-                    Text("No questions due. Study ahead?")
+                    Text("現在、復習すべき問題はありません。先取り学習をしますか？")
                 }
 
                 //TODO: Letzten Wert speichern?

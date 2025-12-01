@@ -29,8 +29,7 @@ fun UpToDateDialog(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //TODO: Japanese
-                Text("Already up to date")
+                Text("すでに最新です")
 
                 TextButton(
                     onClick = { onDismissRequest() },
