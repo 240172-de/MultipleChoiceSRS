@@ -56,7 +56,7 @@ fun SelectNumToStudyDialog(
                 //TODO: Letzten Wert speichern?
                 OutlinedTextField(
                     value = numToStudy,
-                    label = { Text("To study") },
+                    label = { Text("出題数") },
                     onValueChange = { if (it.isDigitsOnly()) numToStudy = it },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
