@@ -190,7 +190,10 @@ fun StudyScreen(
     }
 }
 
-//TODO: Image as answer
+//TODO: Show explanation
+//TODO: Fix TopAppBar when scrolled, disappears sometimes
+//TODO: Test dark mode
+//TODO: Click on Image to open in dialog (full size)
 @Composable
 fun AnswerBottomSheet(
     question: Question,
@@ -198,8 +201,9 @@ fun AnswerBottomSheet(
     onClickNext: () -> Unit
 ) {
     val radioOptions = listOf(question.answer1, question.answer2, question.answer3, question.answer4)
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf("") }
-    var selectedInt by remember { mutableIntStateOf(radioOptions.indexOf(selectedOption)) }
+    val answerImageList = listOf(question.answer1Image, question.answer2Image, question.answer3Image, question.answer4Image)
+    val (indexSelectedOption, onOptionSelected) = remember { mutableIntStateOf(-1) }
+    var submittedAnswer by remember { mutableIntStateOf(-1) }
     var submitButtonText by remember { mutableStateOf("確認") }
     val scrollState = rememberScrollState()
 
@@ -216,17 +220,17 @@ fun AnswerBottomSheet(
                         Modifier
                             .fillMaxWidth()
                             .selectable(
-                                selected = (text == selectedOption),
-                                onClick = { onOptionSelected(text) },
+                                selected = (index == indexSelectedOption),
+                                onClick = { onOptionSelected(index) },
                                 role = Role.RadioButton
                             )
-                            .modifyIf(selectedInt != -1) {
+                            .modifyIf(submittedAnswer != -1) {
                                 var color = Color.Transparent
                                 val index = index + 1
 
                                 if (question.correctAnswer == index) {
                                     color = GreenCorrectAnswer
-                                } else if (selectedInt == index) {
+                                } else if (submittedAnswer == index) {
                                     color = RedIncorrectAnswer
                                 }
 
@@ -240,7 +244,7 @@ fun AnswerBottomSheet(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
-                            selected = (text == selectedOption),
+                            selected = (index == indexSelectedOption),
                             onClick = null
                         )
                         Text(
@@ -248,6 +252,13 @@ fun AnswerBottomSheet(
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(start = 16.dp)
                         )
+
+                        if (answerImageList[index] != null) {
+                            Image(
+                                bitmap = answerImageList[index]!!,
+                                contentDescription = ""
+                            )
+                        }
                     }
                 }
             }
@@ -256,23 +267,23 @@ fun AnswerBottomSheet(
                 Spacer(Modifier.weight(1f))
 
                 Button(
-                    enabled = selectedOption.isNotEmpty(),
+                    enabled = indexSelectedOption != -1,
                     onClick = {
-                        if (selectedInt != -1) {
-                            onOptionSelected("")
-                            selectedInt = -1
+                        if (submittedAnswer != -1) {
+                            onOptionSelected(-1)
+                            submittedAnswer = -1
                             submitButtonText = "確認"
 
                             onClickNext()
                         } else {
-                            selectedInt = radioOptions.indexOf(selectedOption) + 1
+                            submittedAnswer = indexSelectedOption + 1
                             submitButtonText = "次"
 
                             onSubmitAnswer(
                                 Answer(
                                     questionId = question.questionId,
-                                    answerGiven = selectedInt,
-                                    isCorrect = selectedInt == question.correctAnswer
+                                    answerGiven = submittedAnswer,
+                                    isCorrect = submittedAnswer == question.correctAnswer
                                 )
                             )
                         }
