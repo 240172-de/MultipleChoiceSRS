@@ -1,6 +1,5 @@
 package com.example.multiplechoicesrs.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
