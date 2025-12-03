@@ -48,6 +48,7 @@ fun ShowQuestionDialog(
                     }
                 }
 
+                //TODO: Images
                 Text("ア：${question.answer1}")
                 Text("イ：${question.answer2}")
                 Text("ウ：${question.answer3}")

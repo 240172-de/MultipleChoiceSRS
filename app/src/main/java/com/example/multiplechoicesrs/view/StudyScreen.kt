@@ -3,6 +3,7 @@ package com.example.multiplechoicesrs.view
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -51,6 +53,7 @@ import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 import com.example.multiplechoicesrs.view.custom.ExpandableBottomView
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
+import com.example.multiplechoicesrs.view.dialog.FullSizeImageDialog
 import com.example.multiplechoicesrs.view.dialog.ResultDialog
 
 @Composable
@@ -140,6 +143,15 @@ fun StudyScreen(
     val activeQuestionIds = remember { questionList.map { it.questionId }.toMutableStateList() }
     var indexCurrentQuestion by remember { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
+    var fullSizeImage: ImageBitmap? by remember { mutableStateOf(null) }
+
+    if (fullSizeImage != null) {
+        FullSizeImageDialog(
+            fullSizeImage!!
+        ) {
+            fullSizeImage = null
+        }
+    }
 
     Box(Modifier.zIndex(1f)) {
         Column(
@@ -156,7 +168,10 @@ fun StudyScreen(
                 ) {
                     Image(
                         bitmap = it,
-                        contentDescription = ""
+                        contentDescription = "",
+                        modifier = Modifier.clickable {
+                            fullSizeImage = it
+                        }
                     )
                 }
             }
@@ -185,7 +200,11 @@ fun StudyScreen(
                     } else {
                         onFinish()
                     }
-            })
+                },
+                onClickImage = {
+                    fullSizeImage = it
+                }
+            )
         }
     }
 }
@@ -193,12 +212,12 @@ fun StudyScreen(
 //TODO: Show explanation
 //TODO: Fix TopAppBar when scrolled, disappears sometimes
 //TODO: Test dark mode
-//TODO: Click on Image to open in dialog (full size)
 @Composable
 fun AnswerBottomSheet(
     question: Question,
     onSubmitAnswer: (answer: Answer) -> Unit,
-    onClickNext: () -> Unit
+    onClickNext: () -> Unit,
+    onClickImage: (ImageBitmap) -> Unit
 ) {
     val radioOptions = listOf(question.answer1, question.answer2, question.answer3, question.answer4)
     val answerImageList = listOf(question.answer1Image, question.answer2Image, question.answer3Image, question.answer4Image)
@@ -256,7 +275,8 @@ fun AnswerBottomSheet(
                         if (answerImageList[index] != null) {
                             Image(
                                 bitmap = answerImageList[index]!!,
-                                contentDescription = ""
+                                contentDescription = "",
+                                modifier = Modifier.clickable{ onClickImage(answerImageList[index]!!) }
                             )
                         }
                     }
