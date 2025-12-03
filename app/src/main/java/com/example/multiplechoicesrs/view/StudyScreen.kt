@@ -55,6 +55,7 @@ import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
 import com.example.multiplechoicesrs.view.dialog.FullSizeImageDialog
 import com.example.multiplechoicesrs.view.dialog.ResultDialog
+import com.example.multiplechoicesrs.view.dialog.ShowExplanationDialog
 
 @Composable
 fun StudyScreenLoad(
@@ -144,12 +145,21 @@ fun StudyScreen(
     var indexCurrentQuestion by remember { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
     var fullSizeImage: ImageBitmap? by remember { mutableStateOf(null) }
+    var showExplanationDialog by remember { mutableStateOf(false) }
 
     if (fullSizeImage != null) {
         FullSizeImageDialog(
             fullSizeImage!!
         ) {
             fullSizeImage = null
+        }
+    }
+
+    if (showExplanationDialog) {
+        ShowExplanationDialog(
+            explanation = questionList[indexCurrentQuestion].explanation
+        ) {
+            showExplanationDialog = false
         }
     }
 
@@ -203,13 +213,15 @@ fun StudyScreen(
                 },
                 onClickImage = {
                     fullSizeImage = it
+                },
+                onClickShowExplanation = {
+                    showExplanationDialog = true
                 }
             )
         }
     }
 }
 
-//TODO: Show explanation
 //TODO: Fix TopAppBar when scrolled, disappears sometimes
 //TODO: Test dark mode
 @Composable
@@ -217,7 +229,8 @@ fun AnswerBottomSheet(
     question: Question,
     onSubmitAnswer: (answer: Answer) -> Unit,
     onClickNext: () -> Unit,
-    onClickImage: (ImageBitmap) -> Unit
+    onClickImage: (ImageBitmap) -> Unit,
+    onClickShowExplanation: () -> Unit
 ) {
     val radioOptions = listOf(question.answer1, question.answer2, question.answer3, question.answer4)
     val answerImageList = listOf(question.answer1Image, question.answer2Image, question.answer3Image, question.answer4Image)
@@ -283,8 +296,16 @@ fun AnswerBottomSheet(
                 }
             }
 
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Spacer(Modifier.weight(1f))
+
+                if (submittedAnswer != -1 && question.explanation.isNotEmpty()) {
+                    Button(onClickShowExplanation) {
+                        Text("解説表示")
+                    }
+                }
 
                 Button(
                     enabled = indexSelectedOption != -1,
