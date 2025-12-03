@@ -222,7 +222,6 @@ fun StudyScreen(
     }
 }
 
-//TODO: Fix TopAppBar when scrolled, disappears sometimes
 //TODO: Test dark mode
 @Composable
 fun AnswerBottomSheet(
