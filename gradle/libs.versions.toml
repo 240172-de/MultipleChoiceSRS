@@ -19,6 +19,7 @@ loggingInterceptor = "5.3.2"
 mpandroidchart = "v3.1.0"
 runtime = "1.9.5"
 compose = "2.3.6"
+datastorePreferences = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,7 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "compose" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

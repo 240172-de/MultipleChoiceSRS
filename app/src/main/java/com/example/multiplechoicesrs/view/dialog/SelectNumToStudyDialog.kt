@@ -12,29 +12,26 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.multiplechoicesrs.logic.StudyHelper
 import com.example.multiplechoicesrs.model.Deck
+import com.example.multiplechoicesrs.model.viewmodel.SelectNumDialogViewModel
 
 @Composable
 fun SelectNumToStudyDialog(
     deck: Deck,
     categoryIdList: List<Int>,
     onDismissRequest: () -> Unit,
-    navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit
+    navToStudy: (deck: Deck, categoryIdList: List<Int>, numToStudy: Int) -> Unit,
+    dialogViewModel: SelectNumDialogViewModel = viewModel()
 ) {
     val studyHelper = StudyHelper(LocalContext.current)
-    var numToStudy by remember { mutableStateOf("5") }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -53,11 +50,10 @@ fun SelectNumToStudyDialog(
                     Text("現在、復習すべき問題はありません。先取り学習をしますか？")
                 }
 
-                //TODO: Letzten Wert speichern?
                 OutlinedTextField(
-                    value = numToStudy,
+                    value = dialogViewModel.numToStudy,
                     label = { Text("出題数") },
-                    onValueChange = { if (it.isDigitsOnly()) numToStudy = it },
+                    onValueChange = { dialogViewModel.updateNumToStudy(it) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
@@ -68,7 +64,10 @@ fun SelectNumToStudyDialog(
                         horizontalArrangement = Arrangement.Center,
                     ) {
                         TextButton(
-                            onClick = { onDismissRequest() },
+                            onClick = {
+                                onDismissRequest()
+                                dialogViewModel.updateDataStore()
+                            },
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text("キャンセル")
@@ -76,9 +75,10 @@ fun SelectNumToStudyDialog(
                         TextButton(
                             onClick = {
                                 onDismissRequest()
-                                navToStudy(deck, categoryIdList, numToStudy.toInt())
+                                dialogViewModel.updateDataStore()
+                                navToStudy(deck, categoryIdList, dialogViewModel.numToStudy.toInt())
                             },
-                            enabled = numToStudy.isNotEmpty(),
+                            enabled = dialogViewModel.numToStudy.isNotEmpty(),
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text("勉強")
