@@ -129,7 +129,6 @@ class QuestionTableHelper(context: Context) {
 
             val valuesQuestionResult = ContentValues().apply {
                 put(DBHelper.QUESTION_ID, question.questionId)
-                put(DBHelper.NUM_CORRECT, 0)
                 put(DBHelper.DATE_DUE, "")
                 put(DBHelper.STATUS, QuestionStatus.NEW.ordinal)
                 put(DBHelper.BOX, 0)
