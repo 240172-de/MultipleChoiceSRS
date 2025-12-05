@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.db.CategoryTableHelper
@@ -34,7 +35,7 @@ fun DeckListScreen(
     val decks = loadDecks(LocalContext.current)
 
     ProvideAppBarTitle {
-        Text("学習")
+        Text(stringResource(R.string.study))
     }
 
     ProvideAppBarActions {
@@ -43,7 +44,7 @@ fun DeckListScreen(
         }) {
             Icon(
                 painter = painterResource(R.drawable.baseline_download_24),
-                contentDescription = "インポート"
+                contentDescription = stringResource(R.string.import_txt)
             )
         }
 
@@ -55,7 +56,7 @@ fun DeckListScreen(
         ) {
             Icon(
                 painter = painterResource(R.drawable.baseline_delete_24),
-                contentDescription = "削除"
+                contentDescription = stringResource(R.string.delete)
             )
         }
     }
@@ -79,14 +80,14 @@ fun NoDeckDataScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            "データがない",
+            stringResource(R.string.no_data),
             modifier = Modifier.padding(bottom = 20.dp)
         )
 
         Button(onClick = {
             navToImport()
         }) {
-            Text("インポート画面へ")
+            Text(stringResource(R.string.move_to_import))
         }
     }
 }

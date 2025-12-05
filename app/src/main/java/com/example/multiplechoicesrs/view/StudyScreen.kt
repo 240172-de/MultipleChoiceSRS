@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -87,7 +88,7 @@ fun StudyScreenLoad(
         ) {
             Icon(
                 painter = painterResource(R.drawable.outline_arrow_back_24),
-                contentDescription = "戻る"
+                contentDescription = stringResource(R.string.back)
             )
         }
     }
@@ -179,7 +180,7 @@ fun StudyScreen(
                 ) {
                     Image(
                         bitmap = it,
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.full_size_image),
                         modifier = Modifier.clickable {
                             fullSizeImage = it
                         }
@@ -234,11 +235,12 @@ fun AnswerBottomSheet(
     onClickImage: (ImageBitmap) -> Unit,
     onClickShowExplanation: () -> Unit
 ) {
+    val context = LocalContext.current
     val radioOptions = listOf(question.answer1, question.answer2, question.answer3, question.answer4)
     val answerImageList = listOf(question.answer1Image, question.answer2Image, question.answer3Image, question.answer4Image)
     val (indexSelectedOption, onOptionSelected) = rememberSaveable { mutableIntStateOf(-1) }
     var submittedAnswer by rememberSaveable { mutableIntStateOf(-1) }
-    var submitButtonText by rememberSaveable { mutableStateOf("確認") }
+    var submitButtonText by rememberSaveable { mutableStateOf(context.getString(R.string.confirm)) }
     val scrollState = rememberScrollState()
 
     ExpandableBottomView {
@@ -290,7 +292,7 @@ fun AnswerBottomSheet(
                         if (answerImageList[index] != null) {
                             Image(
                                 bitmap = answerImageList[index]!!,
-                                contentDescription = "",
+                                contentDescription = stringResource(R.string.full_size_image),
                                 modifier = Modifier.clickable{ onClickImage(answerImageList[index]!!) }
                             )
                         }
@@ -305,7 +307,7 @@ fun AnswerBottomSheet(
 
                 if (submittedAnswer != -1 && question.explanation.isNotEmpty()) {
                     Button(onClickShowExplanation) {
-                        Text("解説表示")
+                        Text(stringResource(R.string.show_explanation))
                     }
                 }
 
@@ -315,12 +317,12 @@ fun AnswerBottomSheet(
                         if (submittedAnswer != -1) {
                             onOptionSelected(-1)
                             submittedAnswer = -1
-                            submitButtonText = "確認"
+                            submitButtonText = context.getString(R.string.confirm)
 
                             onClickNext()
                         } else {
                             submittedAnswer = indexSelectedOption + 1
-                            submitButtonText = "次"
+                            submitButtonText = context.getString(R.string.next)
 
                             onSubmitAnswer(
                                 Answer(

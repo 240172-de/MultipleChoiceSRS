@@ -15,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.model.Category
@@ -36,7 +37,7 @@ fun CategoryListScreen(
     val list = rememberSaveable { makeList(deck.categories!!) }
 
     ProvideAppBarTitle {
-        Text("分野選択")
+        Text(stringResource(R.string.choose_category))
     }
 
     ProvideAppBarNavigationIcon {
@@ -47,7 +48,7 @@ fun CategoryListScreen(
         ) {
             Icon(
                 painter = painterResource(R.drawable.outline_arrow_back_24),
-                contentDescription = "戻る"
+                contentDescription = stringResource(R.string.back)
             )
         }
     }
@@ -84,7 +85,7 @@ fun CategoryListScreen(
             onClick = {
                 showSelectNumDialog = true
         }) {
-            Text("学習する")
+            Text(stringResource(R.string.do_study))
         }
     }
 }

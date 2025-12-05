@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">PastQ</string>
+    <string name="study">学習</string>
+    <string name="import_txt">インポート</string>
+    <string name="move_to_import">インポート画面へ</string>
+    <string name="no_data">データなし</string>
+    <string name="delete">削除</string>
+    <string name="analysis">分析</string>
+    <string name="all_categories">全分野</string>
+    <string name="choose_from_category">分野から選ぶ</string>
+    <string name="back">戻る</string>
+    <string name="import_success">デッキがインポートされました</string>
+    <string name="import_error">障害が発生しました</string>
+    <string name="connection_error">TODO</string>
+    <string name="choose_category">分野選択</string>
+    <string name="do_study">学習する</string>
+    <string name="whole_deck">全体</string>
+    <string name="question">問題</string>
+    <string name="filter">フィルター</string>
+    <string name="sort">ソート</string>
+    <string name="full_size_image">画像を拡大する</string>
+    <string name="confirm">確認</string>
+    <string name="next">次</string>
+    <string name="show_explanation">解説表示</string>
+    <string name="category_filter">分野フィルター</string>
+    <string name="show_question">問題表示</string>
+    <string name="already_up_to_date">すでに最新です</string>
+    <string name="ok">OK</string>
+    <string name="order">順番</string>
+    <string name="cancel">キャンセル</string>
+    <string name="apply_changes">適用</string>
 </resources>

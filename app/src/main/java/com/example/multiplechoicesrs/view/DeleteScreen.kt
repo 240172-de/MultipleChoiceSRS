@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +43,7 @@ fun DeleteScreen(
     modifier: Modifier = Modifier
 ) {
     ProvideAppBarTitle {
-        Text("削除")
+        Text(stringResource(R.string.delete))
     }
 
     ProvideAppBarNavigationIcon {
@@ -53,7 +54,7 @@ fun DeleteScreen(
         ) {
             Icon(
                 painter = painterResource(R.drawable.outline_arrow_back_24),
-                contentDescription = "戻る"
+                contentDescription = stringResource(R.string.back)
             )
         }
     }
@@ -137,7 +138,7 @@ fun DeleteDeckItem(
             }) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_remove_circle_24),
-                    contentDescription = "削除",
+                    contentDescription = stringResource(R.string.delete),
                     tint = RedIncorrectAnswer
                 )
             }

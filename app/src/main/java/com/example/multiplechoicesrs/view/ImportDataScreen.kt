@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +57,7 @@ fun ImportDataScreen(
     modifier: Modifier = Modifier
 ) {
     ProvideAppBarTitle {
-        Text("インポート")
+        Text(stringResource(R.string.import_txt))
     }
 
     ProvideAppBarNavigationIcon {
@@ -67,7 +68,7 @@ fun ImportDataScreen(
         ) {
             Icon(
                 painter = painterResource(R.drawable.outline_arrow_back_24),
-                contentDescription = "戻る"
+                contentDescription = stringResource(R.string.back)
             )
         }
     }
@@ -97,9 +98,10 @@ fun ImportDecksScreen(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
-    val deckTableHelper = DeckTableHelper(LocalContext.current)
-    val categoryTableHelper = CategoryTableHelper(LocalContext.current)
-    val questionTableHelper = QuestionTableHelper(LocalContext.current)
+    val context = LocalContext.current
+    val deckTableHelper = DeckTableHelper(context)
+    val categoryTableHelper = CategoryTableHelper(context)
+    val questionTableHelper = QuestionTableHelper(context)
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -173,18 +175,18 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
 
                                     showLoadingSpinner = false
                                     importStatus = SnackbarColor.SUCCESS
-                                    snackbarHostState.showSnackbar("デッキがインポートされました")
+                                    snackbarHostState.showSnackbar(context.getString(R.string.import_success))
                                 } catch (e: Exception) {
                                     Log.d("ERROR", e.toString())
                                     showLoadingSpinner = false
                                     importStatus = SnackbarColor.FAILURE
-                                    snackbarHostState.showSnackbar("障害が発生しました")
+                                    snackbarHostState.showSnackbar(context.getString(R.string.import_error))
                                 }
                             }
                         }) {
                             Icon(
                                 painter = painterResource(R.drawable.baseline_download_24),
-                                contentDescription = "インポート"
+                                contentDescription = stringResource(R.string.import_txt)
                             )
                         }
                     }
@@ -202,8 +204,8 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
+            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = stringResource(R.string.connection_error)
         )
-        Text("Load failed", modifier = Modifier.padding(16.dp))
+        Text(stringResource(R.string.connection_error), modifier = Modifier.padding(16.dp))
     }
 }

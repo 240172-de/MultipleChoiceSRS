@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -102,7 +103,7 @@ fun DeckItem(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.baseline_bar_chart_24),
-                        contentDescription = "分析",
+                        contentDescription = stringResource(R.string.analysis),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .size(36.dp)
@@ -112,7 +113,7 @@ fun DeckItem(
 
             Column {
                 Text(
-                    "学習",
+                    stringResource(R.string.study),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -128,7 +129,7 @@ fun DeckItem(
                             val categoryIdList = deck.categories?.map { it.categoryId } ?: emptyList()
                             onClickStudy(deck, categoryIdList)
                         }) {
-                        Text("全分野")
+                        Text(stringResource(R.string.all_categories))
                     }
 
                     if (deck.categories != null && deck.categories!!.size > 1) {
@@ -137,7 +138,7 @@ fun DeckItem(
                             onClick = {
                                 navToCategoryList(deck)
                             }) {
-                            Text("分野から選ぶ")
+                            Text(stringResource(R.string.choose_from_category))
                         }
                     }
                 }

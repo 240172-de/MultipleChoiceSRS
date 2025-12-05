@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.multiplechoicesrs.R
@@ -132,7 +133,7 @@ fun AnalysisQuestionList(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.baseline_search_24),
-                        contentDescription = "フィルター"
+                        contentDescription = stringResource(R.string.filter)
                     )
                 },
                 modifier = Modifier.weight(1f)
@@ -148,7 +149,7 @@ fun AnalysisQuestionList(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_sort_by_alpha_24),
-                    contentDescription = "ソート",
+                    contentDescription = stringResource(R.string.sort),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(36.dp)
@@ -165,7 +166,7 @@ fun AnalysisQuestionList(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_filter_alt_24),
-                    contentDescription = "分野フィルター",
+                    contentDescription = stringResource(R.string.category_filter),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(36.dp)
@@ -207,7 +208,7 @@ fun AnalysisQuestionItem(
             Button(onClick = {
                 onClickShowQuestion()
             }) {
-                Text("問題表示")
+                Text(stringResource(R.string.show_question))
             }
 
             Column(

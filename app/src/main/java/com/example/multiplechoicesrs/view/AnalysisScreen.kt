@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
@@ -19,7 +20,7 @@ fun AnalysisScreen(
     modifier: Modifier = Modifier
 ) {
     ProvideAppBarTitle {
-        Text("分析")
+        Text(stringResource((R.string.analysis)))
     }
 
     ProvideAppBarNavigationIcon {
@@ -30,7 +31,7 @@ fun AnalysisScreen(
         ) {
             Icon(
                 painter = painterResource(R.drawable.outline_arrow_back_24),
-                contentDescription = "戻る"
+                contentDescription = stringResource(R.string.back)
             )
         }
     }
