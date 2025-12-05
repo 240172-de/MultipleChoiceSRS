@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
     primary = LightBlue,
@@ -12,7 +13,8 @@ private val DarkColorScheme = darkColorScheme(
     background = MutedBlack,
     onBackground = MutedWhite,
     primaryContainer = LightBlue,
-    onPrimaryContainer = MutedBlack
+    onPrimaryContainer = MutedBlack,
+    outline = CardViewBorderDark,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -21,7 +23,8 @@ private val LightColorScheme = lightColorScheme(
     background = MutedWhite,
     onBackground = MutedBlack,
     primaryContainer = DarkBlue,
-    onPrimaryContainer = MutedWhite
+    onPrimaryContainer = MutedWhite,
+    outline = Color.Transparent,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

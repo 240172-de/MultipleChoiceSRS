@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +31,7 @@ import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.model.viewmodel.DeleteDeckUiState
 import com.example.multiplechoicesrs.model.viewmodel.DeleteDeckViewModel
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
+import com.example.multiplechoicesrs.view.custom.CustomCard
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
 import com.example.multiplechoicesrs.view.dialog.DeleteDeckDialog
@@ -120,12 +119,7 @@ fun DeleteDeckItem(
     deck: Deck,
     onClickDelete: (deck: Deck) -> Unit
 ) {
-    Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
-    ) {
+    CustomCard {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

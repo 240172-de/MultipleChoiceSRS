@@ -146,14 +146,14 @@ private fun ColumnChart(
                     }
                 ),
                 startAxis = VerticalAxis.rememberStart(
-                    valueFormatter = settings.labelFormat.labelFormatter
+                    valueFormatter = settings.labelFormat.labelFormatter,
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(
                     labelRotationDegrees = if (settings.rotateXAxisLabel) -65f else 0f,
                     label = TextComponent(
                         lineCount = 2,
-                        truncateAt = TextUtils.TruncateAt.MIDDLE
-
+                        truncateAt = TextUtils.TruncateAt.MIDDLE,
+                        color = MaterialTheme.colorScheme.onBackground.toArgb()
                     ),
                     valueFormatter = CartesianValueFormatter { context, x, _ ->
                         context.model.extraStore[labelListKey][x.toInt()]

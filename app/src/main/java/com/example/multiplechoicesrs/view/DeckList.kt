@@ -12,8 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -31,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.model.Deck
+import com.example.multiplechoicesrs.view.custom.CustomCard
 import com.example.multiplechoicesrs.view.dialog.SelectNumToStudyDialog
 
 @Composable
@@ -77,12 +76,7 @@ fun DeckItem(
     navToAnalysis: (Deck) -> Unit,
     onClickStudy: (deck: Deck, categoryIdList: List<Int>) -> Unit,
 ) {
-    Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
-    ) {
+    CustomCard {
         Column(
             modifier = Modifier.padding(10.dp)
         ) {
