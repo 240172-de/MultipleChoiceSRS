@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.example.multiplechoicesrs.ext.customColorPalette
 
 @Composable
 fun CustomCard(
@@ -20,7 +21,7 @@ fun CustomCard(
         containerColor = MaterialTheme.colorScheme.background,
     ),
     elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-    border: BorderStroke = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outline),
+    border: BorderStroke = BorderStroke(0.5.dp, MaterialTheme.customColorPalette.cardViewBorder),
     content: @Composable (ColumnScope.() -> Unit)
 ) {
     Card(

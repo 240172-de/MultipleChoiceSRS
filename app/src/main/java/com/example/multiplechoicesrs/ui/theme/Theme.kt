@@ -1,10 +1,12 @@
 package com.example.multiplechoicesrs.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
@@ -14,7 +16,10 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = MutedWhite,
     primaryContainer = LightBlue,
     onPrimaryContainer = MutedBlack,
-    outline = CardViewBorderDark,
+)
+
+private val DarkCustomColorPalette = CustomColorPalette(
+    cardViewBorder = CardViewBorderDark,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -24,7 +29,6 @@ private val LightColorScheme = lightColorScheme(
     onBackground = MutedBlack,
     primaryContainer = DarkBlue,
     onPrimaryContainer = MutedWhite,
-    outline = Color.Transparent,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -37,6 +41,10 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+private val LightCustomColorPalette = CustomColorPalette(
+    cardViewBorder = Color.Transparent,
+)
+
 @Composable
 fun MultipleChoiceSRSTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -44,11 +52,25 @@ fun MultipleChoiceSRSTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    var colorScheme: ColorScheme
+    var customColorPalette: CustomColorPalette
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    if (darkTheme) {
+        colorScheme = DarkColorScheme
+        customColorPalette = DarkCustomColorPalette
+    } else {
+        colorScheme = LightColorScheme
+        customColorPalette = LightCustomColorPalette
+    }
+
+
+    CompositionLocalProvider(
+        LocalCustomColorPalette provides customColorPalette
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
