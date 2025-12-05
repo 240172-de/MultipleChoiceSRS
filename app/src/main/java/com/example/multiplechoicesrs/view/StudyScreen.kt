@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
@@ -71,7 +72,7 @@ fun StudyScreenLoad(
     }
 
     val studyHelper = StudyHelper(context)
-    val answerList = remember { emptyList<Answer>().toMutableStateList() }
+    val answerList = rememberSaveable { emptyList<Answer>().toMutableStateList() }
     var result: StudySession? by remember { mutableStateOf(null)  }
 
     ProvideAppBarTitle {
@@ -141,8 +142,8 @@ fun StudyScreen(
     onSubmitAnswer: (Answer) -> Unit,
     onFinish: () -> Unit
 ) {
-    val activeQuestionIds = remember { questionList.map { it.questionId }.toMutableStateList() }
-    var indexCurrentQuestion by remember { mutableIntStateOf(0) }
+    val activeQuestionIds = rememberSaveable { questionList.map { it.questionId }.toMutableStateList() }
+    var indexCurrentQuestion by rememberSaveable { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
     var fullSizeImage: ImageBitmap? by remember { mutableStateOf(null) }
     var showExplanationDialog by remember { mutableStateOf(false) }
@@ -235,9 +236,9 @@ fun AnswerBottomSheet(
 ) {
     val radioOptions = listOf(question.answer1, question.answer2, question.answer3, question.answer4)
     val answerImageList = listOf(question.answer1Image, question.answer2Image, question.answer3Image, question.answer4Image)
-    val (indexSelectedOption, onOptionSelected) = remember { mutableIntStateOf(-1) }
-    var submittedAnswer by remember { mutableIntStateOf(-1) }
-    var submitButtonText by remember { mutableStateOf("確認") }
+    val (indexSelectedOption, onOptionSelected) = rememberSaveable { mutableIntStateOf(-1) }
+    var submittedAnswer by rememberSaveable { mutableIntStateOf(-1) }
+    var submitButtonText by rememberSaveable { mutableStateOf("確認") }
     val scrollState = rememberScrollState()
 
     ExpandableBottomView {

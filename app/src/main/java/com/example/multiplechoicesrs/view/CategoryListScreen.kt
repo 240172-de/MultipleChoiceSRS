@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,7 +33,7 @@ fun CategoryListScreen(
     navBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val list = remember { makeList(deck.categories!!) }
+    val list = rememberSaveable { makeList(deck.categories!!) }
 
     ProvideAppBarTitle {
         Text("分野選択")
@@ -52,7 +53,7 @@ fun CategoryListScreen(
     }
 
     var showSelectNumDialog by remember { mutableStateOf(false) }
-    var isButtonEnabled by remember { mutableStateOf(false) }
+    var isButtonEnabled by rememberSaveable { mutableStateOf(false) }
 
     if (showSelectNumDialog) {
         SelectNumToStudyDialog(

@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
@@ -74,14 +75,14 @@ fun AnalysisQuestionList(
     list: List<AnalysisQuestionData>,
     categoryList: List<Category>
 ) {
-    var filterText by remember { mutableStateOf("") }
-    val filterCategoryId = remember { emptyList<Int>().toMutableStateList() }
+    var filterText by rememberSaveable { mutableStateOf("") }
+    val filterCategoryId = rememberSaveable { emptyList<Int>().toMutableStateList() }
     var showFilterCategoryDialog by remember { mutableStateOf(false) }
 
     var selectedQuestion: Question? by remember { mutableStateOf(null) }
     var showQuestionDialog by remember { mutableStateOf(false) }
 
-    var sortBy by remember { mutableStateOf(SortBy.ALPHABETICALLY_ASC) }
+    var sortBy by rememberSaveable { mutableStateOf(SortBy.ALPHABETICALLY_ASC) }
     var showSortDialog by remember { mutableStateOf(false) }
 
     if (showQuestionDialog && selectedQuestion != null) {
@@ -200,16 +201,21 @@ fun AnalysisQuestionItem(
         title = data.question.source,
         initialExpandedState = false
     ) {
-        Column {
+        Column(
+            horizontalAlignment = Alignment.Start
+        ) {
             Button(onClick = {
                 onClickShowQuestion()
             }) {
                 Text("問題表示")
             }
 
-            PieChart(data.pieChartData)
-
-            BarChart(data.barChartData)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                PieChart(data.pieChartData)
+                BarChart(data.barChartData)
+            }
         }
     }
 }
