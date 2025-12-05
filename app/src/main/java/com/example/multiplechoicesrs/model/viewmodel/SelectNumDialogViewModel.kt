@@ -27,7 +27,10 @@ class SelectNumDialogViewModel(application: Application) : AndroidViewModel(appl
     fun updateDataStore() {
         try {
             saveToDataStore(numToStudy.toInt())
-        } catch (_: NumberFormatException) { }
+        } catch (_: NumberFormatException) {
+            //If empty reset to last saved value
+            initFromDataStore()
+        }
     }
 
     private fun initFromDataStore() {
