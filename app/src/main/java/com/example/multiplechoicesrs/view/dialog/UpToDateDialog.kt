@@ -10,8 +10,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.multiplechoicesrs.R
 
 @Composable
 fun UpToDateDialog(
@@ -29,13 +31,13 @@ fun UpToDateDialog(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("すでに最新です")
+                Text(stringResource(R.string.already_up_to_date))
 
                 TextButton(
                     onClick = { onDismissRequest() },
                     modifier = Modifier.padding(8.dp),
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             }
         }

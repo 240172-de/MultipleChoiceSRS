@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.model.Category
 import com.example.multiplechoicesrs.view.custom.CheckableItem
 import com.example.multiplechoicesrs.view.custom.CheckableList
@@ -54,14 +56,14 @@ fun FilterCategoriesDialog(
                         onClick = { onDismissRequest() },
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("キャンセル")
+                        Text(stringResource(R.string.cancel))
                     }
 
                     TextButton(
                         onClick = { onSubmit(getCheckedIds(list)) },
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("適用")
+                        Text(stringResource(R.string.apply_changes))
                     }
                 }
             }

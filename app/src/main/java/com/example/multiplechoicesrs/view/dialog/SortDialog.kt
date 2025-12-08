@@ -18,10 +18,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.multiplechoicesrs.R
 
 @Composable
 fun SortDialog(
@@ -44,7 +46,7 @@ fun SortDialog(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("順番", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.order), fontWeight = FontWeight.Bold)
 
                 Column(
                     Modifier
@@ -86,7 +88,7 @@ fun SortDialog(
                         onClick = { onDismissRequest() },
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("キャンセル")
+                        Text(stringResource(R.string.cancel))
                     }
 
                     TextButton(
@@ -95,7 +97,7 @@ fun SortDialog(
                         },
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("適用")
+                        Text(stringResource(R.string.apply_changes))
                     }
                 }
             }

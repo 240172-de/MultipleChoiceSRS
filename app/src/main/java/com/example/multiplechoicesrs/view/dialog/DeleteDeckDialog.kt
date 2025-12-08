@@ -12,8 +12,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 
@@ -35,7 +37,7 @@ fun DeleteDeckDialog(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("${deck.name}を削除しますか？")
+                Text(stringResource(R.string.confirm_delete, deck.name))
 
                 Row(
                     modifier = Modifier
@@ -46,7 +48,7 @@ fun DeleteDeckDialog(
                         onClick = { onDismissRequest() },
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("キャンセル")
+                        Text(stringResource(R.string.cancel))
                     }
 
                     TextButton(
@@ -56,7 +58,7 @@ fun DeleteDeckDialog(
                         },
                         modifier = Modifier.padding(8.dp)
                     ) {
-                        Text("削除", color = RedIncorrectAnswer)
+                        Text(stringResource(R.string.delete), color = RedIncorrectAnswer)
                     }
                 }
             }

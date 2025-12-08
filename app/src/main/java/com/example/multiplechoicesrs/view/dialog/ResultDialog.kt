@@ -18,12 +18,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.ui.theme.GreenCorrectAnswer
 import com.example.multiplechoicesrs.ui.theme.RedIncorrectAnswer
 
@@ -51,7 +53,7 @@ fun ResultDialog(
                     onClick = { onDismissRequest() },
                     modifier = Modifier.padding(8.dp),
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             }
         }

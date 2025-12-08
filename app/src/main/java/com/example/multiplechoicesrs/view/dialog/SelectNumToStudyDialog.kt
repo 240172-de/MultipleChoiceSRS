@@ -14,11 +14,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.logic.StudyHelper
 import com.example.multiplechoicesrs.model.Deck
 import com.example.multiplechoicesrs.model.viewmodel.SelectNumDialogViewModel
@@ -47,12 +49,12 @@ fun SelectNumToStudyDialog(
                 Text(deck.name, fontWeight = FontWeight.Bold)
 
                 if (!studyHelper.hasDueCards(deck.deckId, categoryIdList)) {
-                    Text("現在、復習すべき問題はありません。先取り学習をしますか？")
+                    Text(stringResource(R.string.study_ahead))
                 }
 
                 OutlinedTextField(
                     value = dialogViewModel.numToStudy,
-                    label = { Text("出題数") },
+                    label = { Text(stringResource(R.string.num_to_study)) },
                     onValueChange = { dialogViewModel.updateNumToStudy(it) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
@@ -70,7 +72,7 @@ fun SelectNumToStudyDialog(
                             },
                             modifier = Modifier.padding(8.dp),
                         ) {
-                            Text("キャンセル")
+                            Text(stringResource(R.string.cancel))
                         }
                         TextButton(
                             onClick = {
@@ -81,7 +83,7 @@ fun SelectNumToStudyDialog(
                             enabled = dialogViewModel.numToStudy.isNotEmpty(),
                             modifier = Modifier.padding(8.dp),
                         ) {
-                            Text("勉強")
+                            Text(stringResource(R.string.study_start))
                         }
                     }
                 }

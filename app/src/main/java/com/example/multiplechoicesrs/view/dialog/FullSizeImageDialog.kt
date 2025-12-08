@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.multiplechoicesrs.R
@@ -39,14 +40,14 @@ fun FullSizeImageDialog(
             IconButton(onDismissRequest) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_close_24),
-                    contentDescription = "閉じる",
+                    contentDescription = stringResource(R.string.close),
                     tint = MutedWhite
                 )
             }
 
             Image(
                 bitmap = imageBitmap,
-                contentDescription = "",
+                contentDescription = stringResource(R.string.image_content_description),
                 modifier = Modifier.fillMaxWidth().clickable(enabled = false, onClick = {}),
                 contentScale = ContentScale.FillWidth,
             )

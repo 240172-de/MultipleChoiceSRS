@@ -29,4 +29,15 @@
     <string name="order">順番</string>
     <string name="cancel">キャンセル</string>
     <string name="apply_changes">適用</string>
+    <string name="answer_a">ア：%1$s</string>
+    <string name="answer_i">イ：%1$s</string>
+    <string name="answer_u">ウ：%1$s</string>
+    <string name="answer_e">エ：%1$s</string>
+    <string name="correct_answer">正解：%1$s</string>
+    <string name="close">閉じる</string>
+    <string name="image_content_description">画像</string>
+    <string name="study_ahead">現在、復習すべき問題はありません。先取り学習をしますか？</string>
+    <string name="num_to_study">出題数</string>
+    <string name="study_start">勉強</string>
+    <string name="confirm_delete">%1$sを削除しますか？</string>
 </resources>
