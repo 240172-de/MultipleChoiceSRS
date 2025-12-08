@@ -40,4 +40,5 @@
     <string name="num_to_study">出題数</string>
     <string name="study_start">勉強</string>
     <string name="confirm_delete">%1$sを削除しますか？</string>
+    <string name="expand">拡大</string>
 </resources>

@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,7 +55,7 @@ fun ExpandableView(title:String, initialExpandedState: Boolean = true, content: 
 
                 Icon(
                     painter = painterResource(R.drawable.baseline_keyboard_arrow_down_24),
-                    contentDescription = "Expand",
+                    contentDescription = stringResource(R.string.expand),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.rotate(degree).size(32.dp)
                 )
