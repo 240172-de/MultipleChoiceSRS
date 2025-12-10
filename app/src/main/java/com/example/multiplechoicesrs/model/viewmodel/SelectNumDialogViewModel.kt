@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.multiplechoicesrs.datastore.DataStoreInstance
 import kotlinx.coroutines.launch
 
-class SelectNumDialogViewModel(application: Application) : AndroidViewModel(application) {
+class SelectNumDialogViewModel(application: Application): AndroidViewModel(application) {
     var numToStudy by mutableStateOf("")
         private set
 
@@ -35,7 +35,7 @@ class SelectNumDialogViewModel(application: Application) : AndroidViewModel(appl
 
     private fun initFromDataStore() {
         viewModelScope.launch {
-            DataStoreInstance.getIntPreferences(
+            DataStoreInstance.getPreferences(
                 getApplication(),
                 DataStoreInstance.PreferencesKeys.NUM_TO_STUDY
             ).collect { valueInt ->
@@ -46,7 +46,7 @@ class SelectNumDialogViewModel(application: Application) : AndroidViewModel(appl
 
     private fun saveToDataStore(numToStudy: Int) {
         viewModelScope.launch {
-            DataStoreInstance.saveIntPreferences(getApplication(), DataStoreInstance.PreferencesKeys.NUM_TO_STUDY, numToStudy)
+            DataStoreInstance.savePreferences(getApplication(), DataStoreInstance.PreferencesKeys.NUM_TO_STUDY, numToStudy)
         }
     }
 
