@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -95,7 +96,7 @@ fun ImportDecksScreen(
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "LocalContextGetResourceValueCall")
 @Composable
 fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -206,6 +207,11 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = stringResource(R.string.connection_error)
         )
-        Text(stringResource(R.string.connection_error), modifier = Modifier.padding(16.dp))
+        Text(
+            stringResource(R.string.connection_error),
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Gray,
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
