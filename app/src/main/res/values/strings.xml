@@ -14,8 +14,6 @@
     <string name="connection_error">接続タイムアウト</string>
     <string name="choose_category">分野選択</string>
     <string name="do_study">学習する</string>
-    <string name="whole_deck">全体</string>
-    <string name="question">問題</string>
     <string name="filter">フィルター</string>
     <string name="sort">ソート</string>
     <string name="full_size_image">画像を拡大する</string>

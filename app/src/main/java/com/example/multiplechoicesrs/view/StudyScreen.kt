@@ -225,8 +225,6 @@ fun StudyScreen(
     }
 }
 
-//TODO: rememberSaveable
-//TODO: Test dark mode
 @SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun AnswerBottomSheet(
