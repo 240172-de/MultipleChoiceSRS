@@ -62,12 +62,24 @@ object AnalysisQuestionSourceComparator: Comparator<AnalysisQuestionData> {
 
 object AnalysisQuestionNumWrongComparator: Comparator<AnalysisQuestionData> {
     override fun compare(data1: AnalysisQuestionData, data2: AnalysisQuestionData): Int {
-        return data1.numIncorrect.compareTo(data2.numIncorrect)
+        val compareTo = data1.numIncorrect.compareTo(data2.numIncorrect)
+
+        return if (compareTo != 0) {
+            compareTo
+        } else {
+            AnalysisQuestionSourceComparator.compare(data1, data2)
+        }
     }
 }
 
 object AnalysisQuestionRatioCorrectComparator: Comparator<AnalysisQuestionData> {
     override fun compare(data1: AnalysisQuestionData, data2: AnalysisQuestionData): Int {
-        return data1.ratioCorrect.compareTo(data2.ratioCorrect)
+        val compareTo = data1.ratioCorrect.compareTo(data2.ratioCorrect)
+
+        return if (compareTo != 0) {
+            compareTo
+        } else {
+            AnalysisQuestionSourceComparator.compare(data1, data2)
+        }
     }
 }
