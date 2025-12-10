@@ -40,14 +40,18 @@ import com.example.multiplechoicesrs.R
 import com.example.multiplechoicesrs.db.CategoryTableHelper
 import com.example.multiplechoicesrs.db.DeckTableHelper
 import com.example.multiplechoicesrs.db.QuestionTableHelper
+import com.example.multiplechoicesrs.model.ConnectionData
 import com.example.multiplechoicesrs.model.DecksJson
 import com.example.multiplechoicesrs.model.SnackbarColor
 import com.example.multiplechoicesrs.model.viewmodel.ImportDecksUiState
 import com.example.multiplechoicesrs.model.viewmodel.ImportDecksViewModel
+import com.example.multiplechoicesrs.model.viewmodel.ImportSettingsDialogViewModel
 import com.example.multiplechoicesrs.rest.MultipleChoiceApi
 import com.example.multiplechoicesrs.view.custom.CustomCard
+import com.example.multiplechoicesrs.view.custom.ProvideAppBarActions
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarNavigationIcon
 import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
+import com.example.multiplechoicesrs.view.dialog.ImportSettingsDialog
 import com.example.multiplechoicesrs.view.dialog.LoadingSpinnerDialog
 import com.example.multiplechoicesrs.view.dialog.UpToDateDialog
 import kotlinx.coroutines.launch
@@ -57,6 +61,10 @@ fun ImportDataScreen(
     navBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showSettingsDialog by remember { mutableStateOf(false) }
+    val importDecksViewModel: ImportDecksViewModel = viewModel()
+    val dialogViewModel: ImportSettingsDialogViewModel = viewModel()
+
     ProvideAppBarTitle {
         Text(stringResource(R.string.import_txt))
     }
@@ -74,8 +82,33 @@ fun ImportDataScreen(
         }
     }
 
+    ProvideAppBarActions {
+        IconButton(onClick = {
+            showSettingsDialog = true
+        }) {
+            Icon(
+                painter = painterResource(R.drawable.baseline_settings_24),
+                contentDescription = stringResource(R.string.settings_import)
+            )
+        }
+    }
+
+    if (showSettingsDialog) {
+        ImportSettingsDialog(
+            onSubmit = {
+                showSettingsDialog = false
+                dialogViewModel.updateDataStore()
+                importDecksViewModel.loadDecks()
+            },
+            onDismissRequest = {
+                showSettingsDialog = false
+                dialogViewModel.resetData()
+            },
+            dialogViewModel = dialogViewModel
+        )
+    }
+
     Column(modifier = modifier) {
-        val importDecksViewModel: ImportDecksViewModel = viewModel()
         ImportDecksScreen(
             importDecksUiState = importDecksViewModel.importDecksUiState
         )
@@ -90,7 +123,9 @@ fun ImportDecksScreen(
     when (importDecksUiState) {
         is ImportDecksUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
         is ImportDecksUiState.Success -> ImportDecksListScreen(
-            importDecksUiState.decks, modifier = modifier.fillMaxWidth()
+            decks = importDecksUiState.decks,
+            connectionData = importDecksUiState.connectionData,
+            modifier = modifier.fillMaxWidth()
         )
         is ImportDecksUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize())
     }
@@ -98,7 +133,11 @@ fun ImportDecksScreen(
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "LocalContextGetResourceValueCall")
 @Composable
-fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
+fun ImportDecksListScreen(
+    decks: DecksJson,
+    connectionData: ConnectionData,
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
     val deckTableHelper = DeckTableHelper(context)
     val categoryTableHelper = CategoryTableHelper(context)
@@ -164,7 +203,7 @@ fun ImportDecksListScreen(decks: DecksJson, modifier: Modifier = Modifier) {
                                 showLoadingSpinner = true
 
                                 try {
-                                    val result = MultipleChoiceApi.retrofitService.importDeck(deck.deckId)
+                                    val result = MultipleChoiceApi(connectionData).retrofitService.importDeck(deck.deckId)
 
                                     deckTableHelper.saveDeck(result)
                                     result.categories?.forEach {

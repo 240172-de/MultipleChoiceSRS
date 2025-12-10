@@ -1,5 +1,6 @@
 package com.example.multiplechoicesrs.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -225,8 +226,8 @@ fun StudyScreen(
 }
 
 //TODO: rememberSaveable
-//TODO: No logging during import
 //TODO: Test dark mode
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun AnswerBottomSheet(
     question: Question,

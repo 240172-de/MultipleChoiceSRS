@@ -41,4 +41,7 @@
     <string name="study_start">勉強</string>
     <string name="confirm_delete">%1$sを削除しますか？</string>
     <string name="expand">拡大</string>
+    <string name="settings_import">接続設定</string>
+    <string name="ip_address">IPアドレス</string>
+    <string name="port">ポート番号</string>
 </resources>
