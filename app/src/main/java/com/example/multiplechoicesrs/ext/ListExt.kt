@@ -17,6 +17,7 @@ fun List<Question>.hasDueQuestions(): Boolean {
     val today = formatter.parse(formatter.format(time))
 
     return this.any { question ->
+        question.result.status == QuestionStatus.NEW ||
         question.result.status == QuestionStatus.REVIEW &&
                 today!! >= formatter.parse(question.result.dateDue)
     }
