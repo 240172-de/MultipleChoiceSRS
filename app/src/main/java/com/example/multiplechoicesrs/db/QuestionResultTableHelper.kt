@@ -17,6 +17,7 @@ class QuestionResultTableHelper(context: Context) {
                 put(DBHelper.DATE_DUE, questionResult.dateDue)
                 put(DBHelper.STATUS, questionResult.status.ordinal)
                 put(DBHelper.BOX, questionResult.box)
+                put(DBHelper.MEMO, questionResult.memo)
             }
 
             db.insertWithOnConflict(
@@ -49,6 +50,7 @@ class QuestionResultTableHelper(context: Context) {
                         it.getString(it.getColumnIndex(DBHelper.DATE_DUE)),
                         QuestionStatus.get(it.getInt(it.getColumnIndex(DBHelper.STATUS))),
                         it.getInt(it.getColumnIndex(DBHelper.BOX)),
+                        it.getString(it.getColumnIndex(DBHelper.MEMO)),
                     )
                 }
             }

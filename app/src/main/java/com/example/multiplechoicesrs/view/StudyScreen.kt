@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.multiplechoicesrs.R
+import com.example.multiplechoicesrs.db.QuestionResultTableHelper
 import com.example.multiplechoicesrs.ext.modifyIf
 import com.example.multiplechoicesrs.logic.StudyHelper
 import com.example.multiplechoicesrs.model.Answer
@@ -59,6 +60,7 @@ import com.example.multiplechoicesrs.view.custom.ProvideAppBarTitle
 import com.example.multiplechoicesrs.view.dialog.FullSizeImageDialog
 import com.example.multiplechoicesrs.view.dialog.ResultDialog
 import com.example.multiplechoicesrs.view.dialog.ShowExplanationDialog
+import com.example.multiplechoicesrs.view.dialog.ShowMemoDialog
 
 @Composable
 fun StudyScreenLoad(
@@ -144,11 +146,13 @@ fun StudyScreen(
     onSubmitAnswer: (Answer) -> Unit,
     onFinish: () -> Unit
 ) {
+    val questionResultTableHelper = QuestionResultTableHelper(LocalContext.current)
     val activeQuestionIds = rememberSaveable { questionList.map { it.questionId }.toMutableStateList() }
     var indexCurrentQuestion by rememberSaveable { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
     var fullSizeImage: ImageBitmap? by remember { mutableStateOf(null) }
     var showExplanationDialog by remember { mutableStateOf(false) }
+    var showMemoDialog by remember { mutableStateOf(false) }
 
     if (fullSizeImage != null) {
         FullSizeImageDialog(
@@ -164,6 +168,21 @@ fun StudyScreen(
         ) {
             showExplanationDialog = false
         }
+    }
+
+    if (showMemoDialog) {
+        ShowMemoDialog(
+            memo = questionList[indexCurrentQuestion].result.memo,
+            onSubmit = { memo ->
+                showMemoDialog = false
+
+                questionList[indexCurrentQuestion].result.memo = memo
+                questionResultTableHelper.saveQuestionResult(questionList[indexCurrentQuestion].result)
+            },
+            onDismissRequest = {
+                showMemoDialog = false
+            }
+        )
     }
 
     Box(Modifier.zIndex(1f)) {
@@ -219,6 +238,9 @@ fun StudyScreen(
                 },
                 onClickShowExplanation = {
                     showExplanationDialog = true
+                },
+                onClickShowMemo = {
+                    showMemoDialog = true
                 }
             )
         }
@@ -232,7 +254,8 @@ fun AnswerBottomSheet(
     onSubmitAnswer: (answer: Answer) -> Unit,
     onClickNext: () -> Unit,
     onClickImage: (ImageBitmap) -> Unit,
-    onClickShowExplanation: () -> Unit
+    onClickShowExplanation: () -> Unit,
+    onClickShowMemo: () -> Unit
 ) {
     val context = LocalContext.current
     val radioOptions = listOf(question.answer1, question.answer2, question.answer3, question.answer4)
@@ -302,6 +325,12 @@ fun AnswerBottomSheet(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+                if (submittedAnswer != -1) {
+                    Button(onClickShowMemo) {
+                        Text(stringResource(R.string.show_memo))
+                    }
+                }
+
                 Spacer(Modifier.weight(1f))
 
                 if (submittedAnswer != -1 && question.explanation.isNotEmpty()) {

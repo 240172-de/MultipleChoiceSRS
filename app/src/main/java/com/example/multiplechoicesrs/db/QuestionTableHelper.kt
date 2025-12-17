@@ -59,6 +59,7 @@ class QuestionTableHelper(context: Context) {
                         it.getString(it.getColumnIndex(DBHelper.DATE_DUE)),
                         QuestionStatus.get(it.getInt(it.getColumnIndex(DBHelper.STATUS))),
                         it.getInt(it.getColumnIndex(DBHelper.BOX)),
+                        it.getString(it.getColumnIndex(DBHelper.MEMO))
                     )
 
                     list.add(

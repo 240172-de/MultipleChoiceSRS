@@ -7,5 +7,6 @@ data class QuestionResult(
     val questionId: Int,
     var dateDue: String,
     var status: QuestionStatus,
-    var box: Int
+    var box: Int,
+    var memo: String
 )

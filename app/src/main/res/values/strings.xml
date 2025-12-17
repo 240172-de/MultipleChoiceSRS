@@ -42,4 +42,7 @@
     <string name="settings_import">接続設定</string>
     <string name="ip_address">IPアドレス</string>
     <string name="port">ポート番号</string>
+    <string name="show_memo">メモ表示</string>
+    <string name="save">保存</string>
+    <string name="memo">メモ</string>
 </resources>

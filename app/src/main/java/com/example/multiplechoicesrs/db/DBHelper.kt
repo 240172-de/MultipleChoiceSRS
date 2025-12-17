@@ -43,6 +43,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         const val DATE_DUE = "date_due"
         const val STATUS = "status"
         const val BOX = "box"
+        const val MEMO = "memo"
 
         const val ANSWER_ID = "answer_id"
         const val TIMESTAMP = "timestamp"
@@ -54,6 +55,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
 
         private const val CREATE_TABLE = "CREATE TABLE IF NOT EXISTS"
         private const val TEXT = "TEXT"
+        private const val TEXT_NOT_NULL = "TEXT NOT NULL DEFAULT ''"
         private const val INTEGER = "INTEGER"
         private const val PRIM_KEY = "PRIMARY KEY"
         private const val PRIM_KEY_AUTOINC = "PRIMARY KEY AUTOINCREMENT"
@@ -124,6 +126,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
                     "$DATE_DUE $TEXT," +
                     "$STATUS $INTEGER," +
                     "$BOX $INTEGER," +
+                    "$MEMO $TEXT_NOT_NULL," +
                     onDeleteCascade(QUESTION_ID, TABLE_QUESTION) +
                 ")"
     }
