@@ -55,15 +55,24 @@ class StudyHelper(context: Context) {
             question.result.dateDue
         }
 
-        val numReviewToAdd = numQuestions - selectedQuestions.size - 1
-        selectedQuestions.addAll(review.take(numReviewToAdd))
+        val hasNew = allQuestions.any { it.result.status == QuestionStatus.NEW }
 
-        val new = allQuestions.filter { question ->
-            question.result.status == QuestionStatus.NEW
+        val numReviewToAdd = if (hasNew) {
+            numQuestions - selectedQuestions.size - 1
+        } else {
+            numQuestions - selectedQuestions.size
         }
 
-        val numNewToAdd = numQuestions - selectedQuestions.size
-        selectedQuestions.addAll(new.take(numNewToAdd))
+        selectedQuestions.addAll(review.take(numReviewToAdd))
+
+        if (hasNew) {
+            val new = allQuestions.filter { question ->
+                question.result.status == QuestionStatus.NEW
+            }
+
+            val numNewToAdd = numQuestions - selectedQuestions.size
+            selectedQuestions.addAll(new.take(numNewToAdd))
+        }
 
         return selectedQuestions
     }
