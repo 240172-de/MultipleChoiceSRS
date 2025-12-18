@@ -147,6 +147,9 @@ private fun ColumnChart(
                 ),
                 startAxis = VerticalAxis.rememberStart(
                     valueFormatter = settings.labelFormat.labelFormatter,
+                    itemPlacer = remember { VerticalAxis.ItemPlacer.step(
+                        step = { settings.labelFormat.stepSize }
+                    ) },
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(
                     labelRotationDegrees = if (settings.rotateXAxisLabel) -65f else 0f,

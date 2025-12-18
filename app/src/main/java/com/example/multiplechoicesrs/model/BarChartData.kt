@@ -26,12 +26,15 @@ data class BarChartDataSettings(
 )
 
 enum class BarChartLabelFormat(
-    val labelFormatter: CartesianValueFormatter
+    val labelFormatter: CartesianValueFormatter,
+    val stepSize: Double
 ) {
     DEFAULT(
-        CartesianValueFormatter.Default
+        labelFormatter = CartesianValueFormatter.Default,
+        stepSize = 1.0
     ),
     PERCENTAGE(
-        CartesianValueFormatter.decimal(DecimalFormat("#.#%"))
+        labelFormatter = CartesianValueFormatter.decimal(DecimalFormat("#.#%")),
+        stepSize = 0.2
     )
 }
