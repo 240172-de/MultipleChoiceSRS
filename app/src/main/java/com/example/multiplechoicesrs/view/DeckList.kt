@@ -113,7 +113,7 @@ fun DeckItem(
 
             Column {
                 Text(
-                    stringResource(R.string.study),
+                    stringResource(R.string.study_scope),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )

@@ -284,20 +284,23 @@ fun AnswerBottomSheet(
                             )
                             .modifyIf(submittedAnswer != -1) {
                                 var color = Color.Transparent
+                                var strokeWidth = 2.dp
                                 val index = index + 1
 
                                 if (question.correctAnswer == index) {
                                     color = GreenCorrectAnswer
+                                    strokeWidth = 3.5.dp
                                 } else if (submittedAnswer == index) {
                                     color = RedIncorrectAnswer
+                                    strokeWidth = 2.dp
                                 }
 
                                 border(
-                                    border = BorderStroke(2.dp, color),
+                                    border = BorderStroke(strokeWidth, color),
                                     shape = RoundedCornerShape(10.dp)
                                 )
                             }
-                            .padding(vertical = 5.dp)
+                            .padding(vertical = 7.dp)
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {

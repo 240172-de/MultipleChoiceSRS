@@ -53,7 +53,7 @@ fun ResultDialog(
                     onClick = { onDismissRequest() },
                     modifier = Modifier.padding(8.dp),
                 ) {
-                    Text(stringResource(R.string.ok))
+                    Text(stringResource(R.string.close))
                 }
             }
         }
