@@ -138,7 +138,7 @@ class StudyHelper(context: Context) {
             in 2..3 -> 7 * 2.0.pow(box - 2)
             in 4..6 -> 30 * 3.0.pow(box - 4)
             in 7..9 -> 365 * 2.0.pow(box - 7)
-            else -> 10.0
+            else -> 365 * 10.0
         }.toLong()
 
         return ZonedDateTime.now()
