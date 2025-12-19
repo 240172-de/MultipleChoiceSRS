@@ -75,11 +75,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
     }
 
-    override fun onOpen(db: SQLiteDatabase?) {
-        super.onOpen(db)
-        db?.setForeignKeyConstraintsEnabled(true)
-    }
-
     private fun generateSQLTableDeck(): String {
         return "$CREATE_TABLE $TABLE_DECK(" +
                     "$DECK_ID $INTEGER $PRIM_KEY," +
@@ -92,8 +87,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         return "$CREATE_TABLE $TABLE_CATEGORY(" +
                     "$DECK_ID $INTEGER," +
                     "$CATEGORY_ID $INTEGER $PRIM_KEY," +
-                    "$CATEGORY_NAME $TEXT," +
-                    onDeleteCascade(DECK_ID, TABLE_DECK) +
+                    "$CATEGORY_NAME $TEXT" +
                 ")"
     }
 
@@ -114,9 +108,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
                     "$ANSWER4_IMAGE $TEXT," +
                     "$CORRECT_ANSWER $INTEGER," +
                     "$EXPLANATION $TEXT," +
-                    "$SOURCE $TEXT," +
-                    onDeleteCascade(DECK_ID, TABLE_DECK) + "," +
-                    onDeleteCascade(CATEGORY_ID, TABLE_CATEGORY) +
+                    "$SOURCE $TEXT" +
                 ")"
     }
 
@@ -126,8 +118,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
                     "$DATE_DUE $TEXT," +
                     "$STATUS $INTEGER," +
                     "$BOX $INTEGER," +
-                    "$MEMO $TEXT_NOT_NULL," +
-                    onDeleteCascade(QUESTION_ID, TABLE_QUESTION) +
+                    "$MEMO $TEXT_NOT_NULL" +
                 ")"
     }
 
@@ -137,8 +128,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
                     "$QUESTION_ID $INTEGER," +
                     "$TIMESTAMP $TEXT," +
                     "$ANSWER_GIVEN $INTEGER," +
-                    "$IS_CORRECT $INTEGER," +
-                    onDeleteCascade(QUESTION_ID, TABLE_QUESTION) +
+                    "$IS_CORRECT $INTEGER" +
                 ")"
     }
 
@@ -149,9 +139,5 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
                     "$NUM_CORRECT $INTEGER," +
                     "$NUM_INCORRECT $INTEGER" +
                 ")"
-    }
-
-    private fun onDeleteCascade(foreignKey: String, referencesTable: String): String {
-        return "FOREIGN KEY($foreignKey) REFERENCES $referencesTable($foreignKey) ON DELETE CASCADE"
     }
 }

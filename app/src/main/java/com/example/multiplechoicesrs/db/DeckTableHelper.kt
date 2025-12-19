@@ -6,7 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.example.multiplechoicesrs.model.Deck
 
-class DeckTableHelper(context: Context) {
+class DeckTableHelper(private val context: Context) {
     private val dbHelper = DBHelper(context)
 
     @SuppressLint("Range")
@@ -57,14 +57,45 @@ class DeckTableHelper(context: Context) {
     }
 
     fun deleteDeck(deckId: Int) {
+        val questionTableHelper = QuestionTableHelper(context)
+        val questionIds = questionTableHelper.getQuestions(deckId).map { it.questionId }
+
         dbHelper.writableDatabase.use { db ->
-            val params = arrayOf(deckId.toString())
+            var params = arrayOf(deckId.toString())
 
             db.delete(
                 DBHelper.TABLE_DECK,
                 "${DBHelper.DECK_ID} = ?",
                 params
             )
+
+            db.delete(
+                DBHelper.TABLE_CATEGORY,
+                "${DBHelper.DECK_ID} = ?",
+                params
+            )
+
+            db.delete(
+                DBHelper.TABLE_QUESTION,
+                "${DBHelper.DECK_ID} = ?",
+                params
+            )
+
+            questionIds.forEach { questionId ->
+                params = arrayOf(questionId.toString())
+
+                db.delete(
+                    DBHelper.TABLE_QUESTION_RESULT,
+                    "${DBHelper.QUESTION_ID} = ?",
+                    params
+                )
+
+                db.delete(
+                    DBHelper.TABLE_ANSWER,
+                    "${DBHelper.QUESTION_ID} = ?",
+                    params
+                )
+            }
         }
     }
 }
