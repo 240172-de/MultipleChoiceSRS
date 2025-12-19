@@ -90,7 +90,8 @@ fun DeckItem(
                     deck.name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.weight(1f, false)
                 )
 
                 OutlinedButton(
