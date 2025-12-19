@@ -24,6 +24,7 @@ import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberColumnCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.compose.common.fill
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
@@ -115,7 +116,7 @@ private fun ColumnChart(
 
                             return LineComponent(
                                 fill = fill(color),
-                                thicknessDp = 5f
+                                thicknessDp = 12f,
                             )
                         }
 
@@ -127,7 +128,7 @@ private fun ColumnChart(
 
                             return LineComponent(
                                 fill = fill(color),
-                                thicknessDp = 10f
+                                thicknessDp = 18f,
                             )
                         }
                     },
@@ -160,10 +161,17 @@ private fun ColumnChart(
                     ),
                     valueFormatter = CartesianValueFormatter { context, x, _ ->
                         context.model.extraStore[labelListKey][x.toInt()]
-                    }
+                    },
+                    itemPlacer = HorizontalAxis.ItemPlacer.aligned(
+                        spacing = { 1 },
+                        offset = { 0 },
+                        shiftExtremeLines = true,
+                        addExtremeLabelPadding = false
+                    )
                 ),
             ),
         modelProducer = modelProducer,
+        scrollState = rememberVicoScrollState(),
         modifier = modifier.modifyIf(settings.rotateXAxisLabel) {
             heightIn(min = 340.dp)
         },
