@@ -10,4 +10,4 @@ val CardViewBorderDark = Color(0xFF0F0F0F)
 
 val GreenCorrectAnswer = Color(0xFF377958)
 val RedIncorrectAnswer = Color(0xFFAD0000)
-val YellowWaring = Color(0xFFBA8E23)
+val YellowWaring = Color(0xFFEFB22E)

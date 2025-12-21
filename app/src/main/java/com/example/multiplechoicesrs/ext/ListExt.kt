@@ -12,12 +12,19 @@ import java.util.Calendar
 import java.util.Locale
 
 fun List<Question>.hasDueQuestions(): Boolean {
+    val hasNew = this.any { question ->
+        question.result.status == QuestionStatus.NEW
+    }
+
+    return hasNew || this.hasDueReviews()
+}
+
+fun List<Question>.hasDueReviews(): Boolean {
     val time = Calendar.getInstance().time
     val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
     val today = formatter.parse(formatter.format(time))
 
     return this.any { question ->
-        question.result.status == QuestionStatus.NEW ||
         question.result.status == QuestionStatus.REVIEW &&
                 today!! >= formatter.parse(question.result.dateDue)
     }
