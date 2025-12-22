@@ -81,9 +81,10 @@ class StudyHelper(context: Context) {
         var numCorrectFirst = 0
         var numIncorrectFirst = 0
         var numCorrectTotal = 0
+        val timestamp = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Japan")).toString()
 
         answerList.groupBy { it.questionId }.forEach { questionId, answers ->
-            val isCorrect = updateQuestionResult(questionId, answers)
+            val isCorrect = updateQuestionResult(questionId, answers, timestamp)
 
             if (isCorrect == 1 && answers.size == 1) {
                 numCorrectFirst++
@@ -95,6 +96,7 @@ class StudyHelper(context: Context) {
         }
 
         val studySession = StudySession(
+            timestamp = timestamp,
             numCorrectFirst = numCorrectFirst,
             numIncorrectFirst = numIncorrectFirst,
             numCorrectTotal = numCorrectTotal,
@@ -111,7 +113,7 @@ class StudyHelper(context: Context) {
     /**
      * Returns 1 if answered correctly, 0 otherwise
      */
-    private fun updateQuestionResult(questionId: Int, answerList: List<Answer>): Int {
+    private fun updateQuestionResult(questionId: Int, answerList: List<Answer>, timestamp: String): Int {
         val questionResult = questionResultTableHelper.getQuestionResult(questionId)!!
 
         var isNewStatusReview = false
@@ -124,7 +126,8 @@ class StudyHelper(context: Context) {
                 newBox -= 2
             }
 
-            answerTableHelper.saveAnswer(answer)
+            val toSave = answer.copy(timestamp = timestamp)
+            answerTableHelper.saveAnswer(toSave)
         }
 
         if (answerList.size == 1) {
