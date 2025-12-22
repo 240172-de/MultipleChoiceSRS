@@ -9,6 +9,8 @@ import java.time.ZonedDateTime
 data class StudySession(
     val studySessionId: Int = -1,
     val timestamp: String = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Japan")).toString(),
-    val numCorrect: Int,
-    val numIncorrect: Int
+    val numCorrectFirst: Int,
+    val numIncorrectFirst: Int,
+    val numCorrectTotal: Int,
+    val numIncorrectTotal: Int
 )

@@ -39,7 +39,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         const val EXPLANATION = "explanation"
         const val SOURCE = "source"
 
-        const val NUM_CORRECT = "num_correct"
         const val DATE_DUE = "date_due"
         const val STATUS = "status"
         const val BOX = "box"
@@ -51,7 +50,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         const val IS_CORRECT = "is_correct"
 
         const val STUDY_SESSION_ID = "study_session_id"
-        const val NUM_INCORRECT = "num_incorrect"
+        const val NUM_CORRECT_FIRST = "num_correct_first"
+        const val NUM_INCORRECT_FIRST = "num_incorrect_first"
+        const val NUM_CORRECT_TOTAL = "num_correct_total"
+        const val NUM_INCORRECT_TOTAL = "num_incorrect_total"
 
         private const val CREATE_TABLE = "CREATE TABLE IF NOT EXISTS"
         private const val TEXT = "TEXT"
@@ -136,8 +138,10 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VE
         return "$CREATE_TABLE $TABLE_STUDY_SESSION(" +
                     "$STUDY_SESSION_ID $INTEGER $PRIM_KEY_AUTOINC," +
                     "$TIMESTAMP $TEXT," +
-                    "$NUM_CORRECT $INTEGER," +
-                    "$NUM_INCORRECT $INTEGER" +
+                    "$NUM_CORRECT_FIRST $INTEGER," +
+                    "$NUM_INCORRECT_FIRST $INTEGER," +
+                    "$NUM_CORRECT_TOTAL $INTEGER," +
+                    "$NUM_INCORRECT_TOTAL $INTEGER" +
                 ")"
     }
 }

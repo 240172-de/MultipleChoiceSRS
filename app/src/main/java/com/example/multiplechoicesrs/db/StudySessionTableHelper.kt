@@ -12,8 +12,10 @@ class StudySessionTableHelper(context: Context) {
         dbHelper.writableDatabase.use {  db ->
             val values = ContentValues().apply {
                 put(DBHelper.TIMESTAMP, studySession.timestamp)
-                put(DBHelper.NUM_CORRECT, studySession.numCorrect)
-                put(DBHelper.NUM_INCORRECT, studySession.numIncorrect)
+                put(DBHelper.NUM_CORRECT_FIRST, studySession.numCorrectFirst)
+                put(DBHelper.NUM_INCORRECT_FIRST, studySession.numIncorrectFirst)
+                put(DBHelper.NUM_CORRECT_TOTAL, studySession.numCorrectTotal)
+                put(DBHelper.NUM_INCORRECT_TOTAL, studySession.numIncorrectTotal)
             }
 
             db.insertWithOnConflict(

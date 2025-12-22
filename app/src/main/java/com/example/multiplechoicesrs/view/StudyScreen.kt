@@ -102,10 +102,10 @@ fun StudyScreenLoad(
             navToDeckList()
         }
 
-        if (result!!.numCorrect > 0 || result!!.numIncorrect > 0) {
+        if (result!!.numCorrectFirst > 0 || result!!.numIncorrectFirst > 0) {
             ResultDialog(
-                result!!.numCorrect,
-                result!!.numIncorrect,
+                result!!.numCorrectFirst,
+                result!!.numIncorrectFirst,
             ) {
                 onDismiss()
             }

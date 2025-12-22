@@ -78,15 +78,27 @@ class StudyHelper(context: Context) {
     }
 
     fun onFinishStudySession(answerList: List<Answer>): StudySession {
-        var numCorrectSession = 0
+        var numCorrectFirst = 0
+        var numIncorrectFirst = 0
+        var numCorrectTotal = 0
 
         answerList.groupBy { it.questionId }.forEach { questionId, answers ->
-            numCorrectSession += updateQuestionResult(questionId, answers)
+            val isCorrect = updateQuestionResult(questionId, answers)
+
+            if (isCorrect == 1 && answers.size == 1) {
+                numCorrectFirst++
+            } else {
+                numIncorrectFirst++
+            }
+
+            numCorrectTotal += isCorrect
         }
 
         val studySession = StudySession(
-            numCorrect = numCorrectSession,
-            numIncorrect = answerList.size - numCorrectSession
+            numCorrectFirst = numCorrectFirst,
+            numIncorrectFirst = numIncorrectFirst,
+            numCorrectTotal = numCorrectTotal,
+            numIncorrectTotal = answerList.size - numCorrectTotal
         )
 
         if (answerList.isNotEmpty()) {
